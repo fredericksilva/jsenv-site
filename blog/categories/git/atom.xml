@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-15T03:48:51+00:00</updated>
+  <updated>2015-03-24T16:38:48-03:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Como Sincronizar Um Fork Com Seu Repositório Original]]></title>
     <link href="http://jsenv.com/blog/2015/02/23/como-sincronizar-um-fork-com-seu-repositorio-original/"/>
-    <updated>2015-02-23T18:06:17+00:00</updated>
+    <updated>2015-02-23T15:06:17-03:00</updated>
     <id>http://jsenv.com/blog/2015/02/23/como-sincronizar-um-fork-com-seu-repositorio-original</id>
     <content type="html"><![CDATA[<p>Estamos acostumados a dar um fork em repositórios que contém scripts, aplicações e frameworks para utilizarmos no nosso dia-a-dia, facilitando a criação de nossas aplicações.</p>
 
