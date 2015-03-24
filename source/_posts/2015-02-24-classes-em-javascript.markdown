@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Classes em Javascript"
+title: "Simulando classes em Javascript"
 date: 2015-02-24 00:01:27 -0300
 author: Rodrigo Fernandes
 comments: true
