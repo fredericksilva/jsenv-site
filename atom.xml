@@ -4,7 +4,7 @@
   <title><![CDATA[JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-24T18:19:37-03:00</updated>
+  <updated>2015-03-25T10:48:02-03:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -12,6 +12,285 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
+    <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
+    <updated>2015-03-21T19:29:00-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
+    <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
+
+<h2>Método $.inArray da jQuery</h2>
+
+<p>Geralmente esta seria uma das alternativas para acharmos um algoritmo que facilitasse a solução do nosso problema, mas já pararam para pensar ou pesquisar o que exatamente o <code>$.inArray</code> faz ou como funciona?</p>
+
+<!--more-->
+
+
+<p>Basicamente o método <code>$.inArray</code> percorre um determinado array e retorna a posição do elemento desejado. Hmmm, isso já ajudaria bastante. Certo?</p>
+
+<p>Porém, concorda que carregar a biblioteca da <code>jQuery</code> só para resolvermos isso seria desnecessário? Então vamos melhorar isso!</p>
+
+<h2>Por trás do método $.inArray</h2>
+
+<p>Ele é semelhante ao <code>indexOf</code> nativo do Javascript e dentro da documentação da jQuery temos acesso a como o método foi escrito e podemos usar como referência.</p>
+
+<figure class='code'><figcaption><span>Método descrito pela biblioteca jQuery</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">inArray</span> <span class="p">(</span> <span class="nx">elem</span><span class="p">,</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">index</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">indexOf</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">elem</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Porém, o <code>indexOf</code> foi adicionado como padrão no ECMA-262 em sua 5ª edição, com isso alguns navegadores antigos não suportam essa funcionalidade, por exemplo o IE8.</p>
+
+<p>Então antes de escrevermos nosso método, criaremos um <em>Helper</em> para garantirmos que esse suporte seja universal.</p>
+
+<p>Primeiro verificamos se o suporte ao <code>indexOf</code> existe, caso contrário seguiremos a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">recomendação de compatibilidade da MDC</a> descrita abaixo:</p>
+
+<figure class='code'><figcaption><span>Helper.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Production steps of ECMA-262, Edition 5, 15.4.4.14</span>
+</span><span class='line'><span class="c1">// Reference: http://es5.github.io/#x15.4.4.14</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">indexOf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">searchElement</span><span class="p">,</span> <span class="nx">fromIndex</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">k</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 1. Let O be the result of calling ToObject passing</span>
+</span><span class='line'>    <span class="c1">//    the this value as the argument.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;&quot;this&quot; is null or not defined&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">O</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 2. Let lenValue be the result of calling the Get</span>
+</span><span class='line'>    <span class="c1">//    internal method of O with the argument &quot;length&quot;.</span>
+</span><span class='line'>    <span class="c1">// 3. Let len be ToUint32(lenValue).</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">O</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 4. If len is 0, return -1.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 5. If argument fromIndex was passed let n be</span>
+</span><span class='line'>    <span class="c1">//    ToInteger(fromIndex); else let n be 0.</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="o">+</span><span class="nx">fromIndex</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 6. If n &gt;= len, return -1.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 7. If n &gt;= 0, then Let k be n.</span>
+</span><span class='line'>    <span class="c1">// 8. Else, n&lt;0, Let k be len - abs(n).</span>
+</span><span class='line'>    <span class="c1">//    If k is less than 0, then let k be 0.</span>
+</span><span class='line'>    <span class="nx">k</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">n</span> <span class="o">:</span> <span class="nx">len</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 9. Repeat, while k &lt; len</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="nx">k</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// a. Let Pk be ToString(k).</span>
+</span><span class='line'>      <span class="c1">//   This is implicit for LHS operands of the in operator</span>
+</span><span class='line'>      <span class="c1">// b. Let kPresent be the result of calling the</span>
+</span><span class='line'>      <span class="c1">//    HasProperty internal method of O with argument Pk.</span>
+</span><span class='line'>      <span class="c1">//   This step can be combined with c</span>
+</span><span class='line'>      <span class="c1">// c. If kPresent is true, then</span>
+</span><span class='line'>      <span class="c1">//    i.  Let elementK be the result of calling the Get</span>
+</span><span class='line'>      <span class="c1">//        internal method of O with the argument ToString(k).</span>
+</span><span class='line'>      <span class="c1">//   ii.  Let same be the result of applying the</span>
+</span><span class='line'>      <span class="c1">//        Strict Equality Comparison Algorithm to</span>
+</span><span class='line'>      <span class="c1">//        searchElement and elementK.</span>
+</span><span class='line'>      <span class="c1">//  iii.  If same is true, return k.</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">O</span> <span class="o">&amp;&amp;</span> <span class="nx">O</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">===</span> <span class="nx">searchElement</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">k</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="nx">k</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Agora que podemos garantir que tudo funcione corretamente em todos os navegadores, prosseguiremos com nossa solução escrevendo nosso método para retornar a posição do elemento que desejamos remover:</p>
+
+<figure class='code'><figcaption><span>Método de sugestão</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">posicaoNoArray</span> <span class="p">(</span> <span class="nx">elemento</span><span class="p">,</span> <span class="nx">array</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">elemento</span> <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Agora que temos nossa função para encontrar a posição do elemento dentro do <em>Array</em>, vamos resolver nosso problema.</p>
+
+<p>Dado um array:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vamos encontrar a posição do elemento cujo valor seja igual a <code>30</code> e guardar em uma variável, deixaremos também, uma variável para guardar o elemento removido.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span>                  <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">elemento_remover</span>            <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span> <span class="o">=</span> <span class="nx">posicaoNoArray</span><span class="p">(</span> <span class="nx">elemento_remover</span><span class="p">,</span> <span class="nx">elementos</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nossa variável <code>posicao_elemento_remover</code> será igual a <code>2</code> lembrando que o índice do array inicia-se em <code>0</code>.</p>
+
+<p>Agora, usaremos o método <code>splice</code> do <code>Array</code> para remover o elemento:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">elemento_removido</span> <span class="o">=</span> <span class="nx">elementos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">posicao_elemento_remover</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Seu primeiro parâmetro é a posição onde iniciará a remoção e o segundo parâmetro a quantidade de elementos que serão removidos. Como queremos somente remover um elemento, o valor adotado é <code>1</code>.</p>
+
+<p>Após essa etapa, temos:</p>
+
+<ul>
+<li><code>elementos</code>         = <code>[10, 20, 40, 50]</code>.</li>
+<li><code>elemento_removido</code> = <code>[30]</code>.</li>
+</ul>
+
+
+<h2>Código completo</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span>                  <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">elemento_remover</span>            <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">posicaoNoArray</span> <span class="p">(</span> <span class="nx">elemento</span><span class="p">,</span> <span class="nx">array</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">elemento</span> <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span> <span class="o">=</span> <span class="nx">posicaoNoArray</span><span class="p">(</span> <span class="nx">elemento_remover</span><span class="p">,</span> <span class="nx">elementos</span> <span class="p">);</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span> <span class="o">=</span> <span class="nx">elementos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">posicao_elemento_remover</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">group</span><span class="p">(</span> <span class="s1">&#39;Resultado:&#39;</span> <span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39; Array final:&#39;</span><span class="p">,</span> <span class="nx">elementos</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39; Elemento removido: &#39;</span><span class="p">,</span> <span class="nx">elemento_removido</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">groupEnd</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusão</h2>
+
+<p>É muito importante utilizar como base de desenvolvimento, métodos e soluções nativas já consagradas e vastamente utilizadas. Assim, além de melhorarmos a escrita de nossos códigos, conseguimos chegar a algoritmos mais enxutos.</p>
+
+<p>Existem <code>n</code> maneiras de se escrever o código acima, fique à vontade para utiliza-lo dentro do seu contexto de desenvolvimento.</p>
+
+<p>Dúvidas ou sugestões, basta deixar um comentário que responderemos o mais breve possível.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>

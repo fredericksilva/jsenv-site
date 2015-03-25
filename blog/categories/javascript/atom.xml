@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-24T18:19:37-03:00</updated>
+  <updated>2015-03-25T10:48:02-03:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -12,6 +12,178 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
+    <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
+    <updated>2015-03-21T19:29:00-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
+    <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
+
+<h2>Método $.inArray da jQuery</h2>
+
+<p>Geralmente esta seria uma das alternativas para acharmos um algoritmo que facilitasse a solução do nosso problema, mas já pararam para pensar ou pesquisar o que exatamente o <code>$.inArray</code> faz ou como funciona?</p>
+
+<!--more-->
+
+
+<p>Basicamente o método <code>$.inArray</code> percorre um determinado array e retorna a posição do elemento desejado. Hmmm, isso já ajudaria bastante. Certo?</p>
+
+<p>Porém, concorda que carregar a biblioteca da <code>jQuery</code> só para resolvermos isso seria desnecessário? Então vamos melhorar isso!</p>
+
+<h2>Por trás do método $.inArray</h2>
+
+<p>Ele é semelhante ao <code>indexOf</code> nativo do Javascript e dentro da documentação da jQuery temos acesso a como o método foi escrito e podemos usar como referência.</p>
+
+<pre><code class="javascript Método descrito pela biblioteca jQuery">function inArray ( elem, array, index ) {
+  return array == null ? -1 : indexOf.call( array, elem, index);
+}
+</code></pre>
+
+<p>Porém, o <code>indexOf</code> foi adicionado como padrão no ECMA-262 em sua 5ª edição, com isso alguns navegadores antigos não suportam essa funcionalidade, por exemplo o IE8.</p>
+
+<p>Então antes de escrevermos nosso método, criaremos um <em>Helper</em> para garantirmos que esse suporte seja universal.</p>
+
+<p>Primeiro verificamos se o suporte ao <code>indexOf</code> existe, caso contrário seguiremos a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">recomendação de compatibilidade da MDC</a> descrita abaixo:</p>
+
+<pre><code class="javascript Helper.js">// Production steps of ECMA-262, Edition 5, 15.4.4.14
+// Reference: http://es5.github.io/#x15.4.4.14
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(searchElement, fromIndex) {
+
+    var k;
+
+    // 1. Let O be the result of calling ToObject passing
+    //    the this value as the argument.
+    if (this == null) {
+      throw new TypeError('"this" is null or not defined');
+    }
+
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get
+    //    internal method of O with the argument "length".
+    // 3. Let len be ToUint32(lenValue).
+    var len = O.length &gt;&gt;&gt; 0;
+
+    // 4. If len is 0, return -1.
+    if (len === 0) {
+      return -1;
+    }
+
+    // 5. If argument fromIndex was passed let n be
+    //    ToInteger(fromIndex); else let n be 0.
+    var n = +fromIndex || 0;
+
+    if (Math.abs(n) === Infinity) {
+      n = 0;
+    }
+
+    // 6. If n &gt;= len, return -1.
+    if (n &gt;= len) {
+      return -1;
+    }
+
+    // 7. If n &gt;= 0, then Let k be n.
+    // 8. Else, n&lt;0, Let k be len - abs(n).
+    //    If k is less than 0, then let k be 0.
+    k = Math.max(n &gt;= 0 ? n : len - Math.abs(n), 0);
+
+    // 9. Repeat, while k &lt; len
+    while (k &lt; len) {
+      // a. Let Pk be ToString(k).
+      //   This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the
+      //    HasProperty internal method of O with argument Pk.
+      //   This step can be combined with c
+      // c. If kPresent is true, then
+      //    i.  Let elementK be the result of calling the Get
+      //        internal method of O with the argument ToString(k).
+      //   ii.  Let same be the result of applying the
+      //        Strict Equality Comparison Algorithm to
+      //        searchElement and elementK.
+      //  iii.  If same is true, return k.
+      if (k in O &amp;&amp; O[k] === searchElement) {
+        return k;
+      }
+      k++;
+    }
+    return -1;
+  };
+}
+</code></pre>
+
+<p>Agora que podemos garantir que tudo funcione corretamente em todos os navegadores, prosseguiremos com nossa solução escrevendo nosso método para retornar a posição do elemento que desejamos remover:</p>
+
+<pre><code class="javascript Método de sugestão">function posicaoNoArray ( elemento, array ) {
+    return array == null ? -1 : array.indexOf( elemento );
+}
+</code></pre>
+
+<p>Agora que temos nossa função para encontrar a posição do elemento dentro do <em>Array</em>, vamos resolver nosso problema.</p>
+
+<p>Dado um array:</p>
+
+<pre><code class="javascript">var elementos = [10, 20, 30, 40, 50];
+</code></pre>
+
+<p>Vamos encontrar a posição do elemento cujo valor seja igual a <code>30</code> e guardar em uma variável, deixaremos também, uma variável para guardar o elemento removido.</p>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+</code></pre>
+
+<p>Nossa variável <code>posicao_elemento_remover</code> será igual a <code>2</code> lembrando que o índice do array inicia-se em <code>0</code>.</p>
+
+<p>Agora, usaremos o método <code>splice</code> do <code>Array</code> para remover o elemento:</p>
+
+<pre><code class="javascript">elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+</code></pre>
+
+<p>Seu primeiro parâmetro é a posição onde iniciará a remoção e o segundo parâmetro a quantidade de elementos que serão removidos. Como queremos somente remover um elemento, o valor adotado é <code>1</code>.</p>
+
+<p>Após essa etapa, temos:</p>
+
+<ul>
+<li><code>elementos</code>         = <code>[10, 20, 40, 50]</code>.</li>
+<li><code>elemento_removido</code> = <code>[30]</code>.</li>
+</ul>
+
+
+<h2>Código completo</h2>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+    //
+    function posicaoNoArray ( elemento, array ) {
+        return array == null ? -1 : array.indexOf( elemento );
+    }
+    //
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+    //
+    elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+    //
+    console.group( 'Resultado:' );
+    console.log(' Array final:', elementos);
+    console.log(' Elemento removido: ', elemento_removido);
+    console.groupEnd();
+</code></pre>
+
+<h2>Conclusão</h2>
+
+<p>É muito importante utilizar como base de desenvolvimento, métodos e soluções nativas já consagradas e vastamente utilizadas. Assim, além de melhorarmos a escrita de nossos códigos, conseguimos chegar a algoritmos mais enxutos.</p>
+
+<p>Existem <code>n</code> maneiras de se escrever o código acima, fique à vontade para utiliza-lo dentro do seu contexto de desenvolvimento.</p>
+
+<p>Dúvidas ou sugestões, basta deixar um comentário que responderemos o mais breve possível.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>
@@ -548,153 +720,6 @@ for( var i = 0; i &lt; users.length; i+=1)
 <p>O Javascript possui vários gotchas. <a href="http://www.codeproject.com/Articles/182416/A-Collection-of-JavaScript-Gotchas">Jonathan Cardy</a> escreveu um post bem completo, sobre vários gotchas do Javascript, vale uma lida.</p>
 
 <p>Já com relação a closures, existe um post no <a href="http://stackoverflow.com/questions/111102/how-do-javascript-closures-work">stackoverflow</a> detalhando sobre o assunto.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Web Messaging - API HTML 5]]></title>
-    <link href="http://jsenv.com/blog/2015/02/20/web-messaging/"/>
-    <updated>2015-02-20T17:24:45-02:00</updated>
-    <id>http://jsenv.com/blog/2015/02/20/web-messaging</id>
-    <content type="html"><![CDATA[<p><em>Web Messaging</em> ou <em>Cross-document Messaging</em> é uma API introduzida nas especificações da HTML 5 que permite a comunicação entre documentos de origens diferentes.</p>
-
-<!-- more -->
-
-
-<p>Mensagens <em>cross-document</em> permitem que os scritps possam interagir através destes limites, proporcionando um nível de segurança não muito desenvolvido.
-Sendo assim, é essencial que o desenvolvedor cheque a origem da mensagem antes de efetuar qualquer manipulação.</p>
-
-<p>A tabela abaixo, esclarece forma simples como funciona a <strong><em>Política de Mesma Origem</em></strong>:</p>
-
-<table>
-<thead>
-<tr>
-<th> <strong>URL</strong>                    </th>
-<th style="text-align:center;"> <strong>Mesma origem?</strong> </th>
-<th style="text-align:right;"> <strong>Razão</strong>        </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> <a href="http://jsenv.com/about">http://jsenv.com/about</a>     </td>
-<td style="text-align:center;"> Sim             </td>
-<td style="text-align:right;"> mesmo host, protocolo, porta        </td>
-</tr>
-<tr>
-<td> <a href="http://jsenv.com/">http://jsenv.com/</a>          </td>
-<td style="text-align:center;"> Sim             </td>
-<td style="text-align:right;"> mesmo host, protocolo, porta        </td>
-</tr>
-<tr>
-<td> <a href="https://jsenv.com/">https://jsenv.com/</a>         </td>
-<td style="text-align:center;"> Não                </td>
-<td style="text-align:right;"> protocolo diferente </td>
-</tr>
-<tr>
-<td> <a href="http://jsenv.com:81">http://jsenv.com:81</a>        </td>
-<td style="text-align:center;"> Não                </td>
-<td style="text-align:right;"> porta diferente     </td>
-</tr>
-<tr>
-<td> <a href="http://about.jsenv.com">http://about.jsenv.com</a>     </td>
-<td style="text-align:center;"> Não                </td>
-<td style="text-align:right;"> host diferente      </td>
-</tr>
-</tbody>
-</table>
-
-
-<h3>window.postMessage(<em>mensagem</em>, <em>destino</em>, <em>[portas]</em>)</h3>
-
-<p>Esta API permite que seja enviadas mensagens de texto simples, porém podemos enviar objetos transformados em String, por exemplo: <strong><em>JSON.stringify()</em></strong> para o envio e <strong><em>JSON.parse()</em></strong> no recebimento.
-Confira nos exemplos abaixo:</p>
-
-<pre><code class="javascript Conversão de um objeto em string">var obj_message = { 
-    nome: 'JS Env',
-    dominio: 'jsenv.com',
-    atualizado: true },
-    str_message = '';
-/* transformando um objeto em string para envio */
-str_message = JSON.stringify( obj_message );
-</code></pre>
-
-<pre><code class="javascript Conversão de uma string em objeto">/* "{"nome":"JS Env","dominio":"jsenv.com","atualizado":true}" */
-str_message = JSON.parse( obj_message );
-</code></pre>
-
-<h3>Parâmetros:</h3>
-
-<ul>
-<li><strong>mensagem</strong>: é uma string contendo a mensagem.</li>
-<li><strong>destino</strong>: é o endereço para onde a mensagem está sendo enviada. Ele pode adotar 3 tipos de valores:
-
-<ul>
-<li>uma URL absoluta: <a href="http://www.jsenv.com">http://www.jsenv.com</a></li>
-<li>um caractere curinga (*), para receber de qualquer destino.</li>
-<li>ou um valor que restringe o destino da mensagem (/), adotando o a política de mesma origem.</li>
-</ul>
-</li>
-<li><strong>portas</strong>   (opcional):    define um array com as portas válidas para o destino da mensagem.</li>
-</ul>
-
-
-<p>As mensagens podem ser enviadas de iframes para o documento que o carrega (parent) e o processo inverso, do documento (parent) para o iframe, conforme exemplo abaixo:</p>
-
-<pre><code class="javascript">    /* Posta mensagem para o iFrame */
-    var sender = document.getElementsByTagName('iframe')[0];
-    sender.contentWindow.postMessage('{ atualizar: true }', 'http://jsenv.com/');
-</code></pre>
-
-<pre><code class="javascript">    /* Posta a mensagem para o parent do iFrame */
-    var sender = window.parent;
-    sender.postMessage('{ atualizar: true }', 'http://jsenv.com/'); 
-</code></pre>
-
-<h3>Escutando o evento &ldquo;message&rdquo;</h3>
-
-<p>Para receber a mensagem, basta escutarmos o evento padrão da especificação da API Web Messaging: <strong><em>message</em></strong> . Ele deve estar na página que irá manipular a mensagem. Conforme exemplo abaixo:</p>
-
-<pre><code class="javascript">    if ( window.addEventListener ) {
-        window.addEventListener( 'message', show_message, false );
-    } else {
-        window.attachEvent( 'message', show_message );
-    }
-    function show_message ( event ) { ... }
-</code></pre>
-
-<h3>O Evento de mensagem recebido possui os seguintes atributos:</h3>
-
-<ul>
-<li><strong>data</strong>:         O conteúdo da mensagem.</li>
-<li><strong>origin</strong>:       A origem da mensagem.</li>
-<li><strong>source</strong>:       O objeto WindowProxy do destino da mensagem.</li>
-<li><strong>ports</strong>:        Retorna um array com as portas enviadas junto da mensagem.</li>
-<li><strong>lastEventId</strong>:  Retorna o identificador do último evento.</li>
-</ul>
-
-
-<p>Assim, para visualizar cada atributo citado acima, a função <strong><em>show_message</em></strong> fica:</p>
-
-<pre><code class="javascript">    function show_message ( event ) {
-        if ( event.origin == 'http://jsenv.com' ) {     
-            console.log( 'Mensagem      =&gt;', event.data );
-            console.log( 'origem        =&gt;', event.origin );
-            console.log( 'WindowProxy   =&gt;', event.source );
-            console.log( 'Ports             =&gt;', event.ports );
-            console.log( 'LastEventID   =&gt;', event.lastEventId );
-        } else {
-            console.log( 'Origem de envio não autorizada.' );
-        }
-    }
-</code></pre>
-
-<p>Referências:</p>
-
-<ul>
-<li><strong>Wikipedia:</strong> <a href="http://en.wikipedia.org/wiki/Web_Messaging">http://en.wikipedia.org/wiki/Web_Messaging</a></li>
-<li><strong>Livro HTML 5 - Maujor:</strong> <a href="http://livrohtml5.com.br/">http://livrohtml5.com.br/</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
