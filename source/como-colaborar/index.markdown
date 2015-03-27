@@ -75,7 +75,7 @@ Crie um pull request relativo a branch do novo post, mais informações de como 
 
 ## Processo de publicação
 
-Seu post será avaliado pelos nossos mantedores, em caso de resalvas, as mesmas serão descritas nos comentários do pull request.
+Seu post será avaliado pelos nossos mantenedores, em caso de ressalvas, as mesmas serão descritas nos comentários do pull request.
 
 Após o pull request receber três aprovações, seu post será publicado e você será notificado.
 
