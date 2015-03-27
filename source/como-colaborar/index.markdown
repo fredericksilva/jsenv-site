@@ -3,7 +3,7 @@ layout: page
 title: "Como colaborar"
 date: 2015-03-27 11:59
 comments: true
-sharing: true
+share: true
 footer: true
 image:
   feature: http://jsenv.com/post_images/64696F92C4.jpg

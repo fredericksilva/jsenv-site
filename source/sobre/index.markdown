@@ -3,7 +3,7 @@ layout: page
 title: "Sobre"
 date: 2015-02-20 11:00
 comments: true
-sharing: true
+share: true
 footer: true
 image:
   feature: http://jsenv.com/post_images/CYUGA8SDGC.jpg
