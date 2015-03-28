@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Javascript | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/javascript/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-03-27T18:29:57-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
+    <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
+    <updated>2015-03-21T19:29:00-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
+    <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
+
+<h2>Método $.inArray da jQuery</h2>
+
+<p>Geralmente esta seria uma das alternativas para acharmos um algoritmo que facilitasse a solução do nosso problema, mas já pararam para pensar ou pesquisar o que exatamente o <code>$.inArray</code> faz ou como funciona?</p>
+
+<!--more-->
+
+
+<p>Basicamente o método <code>$.inArray</code> percorre um determinado array e retorna a posição do elemento desejado. Hmmm, isso já ajudaria bastante. Certo?</p>
+
+<p>Porém, concorda que carregar a biblioteca da <code>jQuery</code> só para resolvermos isso seria desnecessário? Então vamos melhorar isso!</p>
+
+<h2>Por trás do método $.inArray</h2>
+
+<p>Ele é semelhante ao <code>indexOf</code> nativo do Javascript e dentro da documentação da jQuery temos acesso a como o método foi escrito e podemos usar como referência.</p>
+
+<pre><code class="javascript Método descrito pela biblioteca jQuery">function inArray ( elem, array, index ) {
+  return array == null ? -1 : indexOf.call( array, elem, index);
+}
+</code></pre>
+
+<p>Porém, o <code>indexOf</code> foi adicionado como padrão no ECMA-262 em sua 5ª edição, com isso alguns navegadores antigos não suportam essa funcionalidade, por exemplo o IE8.</p>
+
+<p>Então antes de escrevermos nosso método, criaremos um <em>Helper</em> para garantirmos que esse suporte seja universal.</p>
+
+<p>Primeiro verificamos se o suporte ao <code>indexOf</code> existe, caso contrário seguiremos a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">recomendação de compatibilidade da MDC</a> descrita abaixo:</p>
+
+<pre><code class="javascript Helper.js">// Production steps of ECMA-262, Edition 5, 15.4.4.14
+// Reference: http://es5.github.io/#x15.4.4.14
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(searchElement, fromIndex) {
+
+    var k;
+
+    // 1. Let O be the result of calling ToObject passing
+    //    the this value as the argument.
+    if (this == null) {
+      throw new TypeError('"this" is null or not defined');
+    }
+
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get
+    //    internal method of O with the argument "length".
+    // 3. Let len be ToUint32(lenValue).
+    var len = O.length &gt;&gt;&gt; 0;
+
+    // 4. If len is 0, return -1.
+    if (len === 0) {
+      return -1;
+    }
+
+    // 5. If argument fromIndex was passed let n be
+    //    ToInteger(fromIndex); else let n be 0.
+    var n = +fromIndex || 0;
+
+    if (Math.abs(n) === Infinity) {
+      n = 0;
+    }
+
+    // 6. If n &gt;= len, return -1.
+    if (n &gt;= len) {
+      return -1;
+    }
+
+    // 7. If n &gt;= 0, then Let k be n.
+    // 8. Else, n&lt;0, Let k be len - abs(n).
+    //    If k is less than 0, then let k be 0.
+    k = Math.max(n &gt;= 0 ? n : len - Math.abs(n), 0);
+
+    // 9. Repeat, while k &lt; len
+    while (k &lt; len) {
+      // a. Let Pk be ToString(k).
+      //   This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the
+      //    HasProperty internal method of O with argument Pk.
+      //   This step can be combined with c
+      // c. If kPresent is true, then
+      //    i.  Let elementK be the result of calling the Get
+      //        internal method of O with the argument ToString(k).
+      //   ii.  Let same be the result of applying the
+      //        Strict Equality Comparison Algorithm to
+      //        searchElement and elementK.
+      //  iii.  If same is true, return k.
+      if (k in O &amp;&amp; O[k] === searchElement) {
+        return k;
+      }
+      k++;
+    }
+    return -1;
+  };
+}
+</code></pre>
+
+<p>Agora que podemos garantir que tudo funcione corretamente em todos os navegadores, prosseguiremos com nossa solução escrevendo nosso método para retornar a posição do elemento que desejamos remover:</p>
+
+<pre><code class="javascript Método de sugestão">function posicaoNoArray ( elemento, array ) {
+    return array == null ? -1 : array.indexOf( elemento );
+}
+</code></pre>
+
+<p>Agora que temos nossa função para encontrar a posição do elemento dentro do <em>Array</em>, vamos resolver nosso problema.</p>
+
+<p>Dado um array:</p>
+
+<pre><code class="javascript">var elementos = [10, 20, 30, 40, 50];
+</code></pre>
+
+<p>Vamos encontrar a posição do elemento cujo valor seja igual a <code>30</code> e guardar em uma variável, deixaremos também, uma variável para guardar o elemento removido.</p>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+</code></pre>
+
+<p>Nossa variável <code>posicao_elemento_remover</code> será igual a <code>2</code> lembrando que o índice do array inicia-se em <code>0</code>.</p>
+
+<p>Agora, usaremos o método <code>splice</code> do <code>Array</code> para remover o elemento:</p>
+
+<pre><code class="javascript">elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+</code></pre>
+
+<p>Seu primeiro parâmetro é a posição onde iniciará a remoção e o segundo parâmetro a quantidade de elementos que serão removidos. Como queremos somente remover um elemento, o valor adotado é <code>1</code>.</p>
+
+<p>Após essa etapa, temos:</p>
+
+<ul>
+<li><code>elementos</code>         = <code>[10, 20, 40, 50]</code>.</li>
+<li><code>elemento_removido</code> = <code>[30]</code>.</li>
+</ul>
+
+
+<h2>Código completo</h2>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+    //
+    function posicaoNoArray ( elemento, array ) {
+        return array == null ? -1 : array.indexOf( elemento );
+    }
+    //
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+    //
+    elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+    //
+    console.group( 'Resultado:' );
+    console.log(' Array final:', elementos);
+    console.log(' Elemento removido: ', elemento_removido);
+    console.groupEnd();
+</code></pre>
+
+<h2>Conclusão</h2>
+
+<p>É muito importante utilizar como base de desenvolvimento, métodos e soluções nativas já consagradas e vastamente utilizadas. Assim, além de melhorarmos a escrita de nossos códigos, conseguimos chegar a algoritmos mais enxutos.</p>
+
+<p>Existem <code>n</code> maneiras de se escrever o código acima, fique à vontade para utiliza-lo dentro do seu contexto de desenvolvimento.</p>
+
+<p>Dúvidas ou sugestões, basta deixar um comentário que responderemos o mais breve possível.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>
+    <link href="http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/"/>
+    <updated>2015-03-08T00:41:33-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api</id>
+    <content type="html"><![CDATA[<p><a href="https://developer.chrome.com/devtools/docs/console">Console</a> é uma ferramenta sagrada para Front-enders, usada para debugar, procurar por erros, gerar logs, fazer testes de performance, teste de asserção, entre outras coisas que nos ajudam a fazer análises a aplicação do lado do cliente.</p>
+
+<p>Esse poste tem o objetivo de mostrar algumas dicas que vão facilitar suas análises e debug da aplicação especificamente para o <strong>Google Chrome.</strong></p>
+
+<!--more-->
+
+
+<p>O Chrome possui uma ferramenta muito poderosa chamada <a href="https://developer.chrome.com/devtools/docs/console">Console</a>, tal é composta por duas APIs, <a href="https://developer.chrome.com/devtools/docs/console">Console API</a> que será abordada neste poste e <a href="https://developer.chrome.com/devtools/docs/commandline-api">Comman Line API</a> que será abordada na parte dois do post.</p>
+
+<p>Lembrando que os exemplos deste post foram feitos no <strong>Google Chrome,</strong> porém são similares em outros browsers (Safari, Firefox e Opera).</p>
+
+<p><strong>Let&rsquo;s Rock</strong></p>
+
+<h2>Abrindo o Console</h2>
+
+<p>Para ter acesso ao Console use as teclas de atalho <strong>Ctrl + Shift + j</strong> no Windows/Linux ou <strong>Command + Option + j</strong> para Mac.</p>
+
+<p><img src="/console.jpg" alt="Console" /></p>
+
+<h3>Logando mensagens</h3>
+
+<h4>Exibir mensagem - <em>console.log(object [, object, &hellip;])</em></h4>
+
+<p>Provavelmente é o método mais utilizado da API, com ele podemos exibir mensagens no console.</p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.log(a)
+console.log(b)
+</code></pre>
+
+<p><img src="/logando-mensagem.jpg" alt="Logando mensagens" /></p>
+
+<p>Podemos usar curingas para concatenar com variáveis de forma elegante:</p>
+
+<table>
+<thead>
+<tr>
+<th> Curinga       </th>
+<th style="text-align:center;"> Tipo          </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <strong>%s</strong>            </td>
+<td style="text-align:center;"> string        </td>
+</tr>
+<tr>
+<td> <strong>%d ou %i</strong>      </td>
+<td style="text-align:center;"> integer       </td>
+</tr>
+<tr>
+<td> <strong>%f</strong>            </td>
+<td style="text-align:center;"> float         </td>
+</tr>
+<tr>
+<td> <strong>%o</strong>            </td>
+<td style="text-align:center;"> DOM Elements  </td>
+</tr>
+<tr>
+<td> <strong>%O</strong>            </td>
+<td style="text-align:center;"> Javascript object</td>
+</tr>
+<tr>
+<td> <strong>%c</strong>            </td>
+<td style="text-align:center;"> CSS style     </td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>Concatenando com variáveis:</strong></p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.log("valor de a: %i e valor de b: %i", a, b)
+</code></pre>
+
+<p><img src="/logando-concat-string.jpg" alt="Concatenando" /></p>
+
+<p><strong>Concatenando com objetos:</strong></p>
+
+<pre><code class="javascript">var nome  = { nome: "Geremias", cidade:"Jaraitinga" }
+var curso = { nome: "Administração", turma: "A" }
+
+console.log("Nome: %O e curso: %O", nome, curso)
+</code></pre>
+
+<p><img src="/logando-objetos.jpg" alt="Logando objetos" /></p>
+
+<p><strong>Estilizando as mensagens:</strong></p>
+
+<pre><code class="javascript">console.log("%cHello %cworld","color:red;font-size:x-large","color:blue")
+</code></pre>
+
+<p><img src="/logando-estilizado.jpg" alt="Logando com estilo" /></p>
+
+<h4>Exibir mensagens de alerta - <em>console.warn(object [, object, &hellip;])</em></h4>
+
+<pre><code class="javascript">console.warn("E-mail inválido")
+</code></pre>
+
+<p><img src="/logando-warn.jpg" alt="Logando mensagem de warn" /></p>
+
+<h4>Agrupando logs - <em>console.group(object [, object, &hellip;])</em>, <em>console.groupEnd()</em></h4>
+
+<pre><code class="javascript">console.group("Logs de Usuários")
+console.log("Usuário logado")
+console.log("Usuário efetuo a compra com sucesso")
+console.groupEnd();
+
+console.group("Carrinho de compras")
+console.log("Carrinho vazio")
+console.log("Novo item adicionado ao carrinho")
+console.groupEnd()
+</code></pre>
+
+<p><img src="/logando-group.jpg" alt="Agrupando" /></p>
+
+<h4>Agrupando com  groupCollapsed -  <em>console.groupCollapsed(object [, object, &hellip;])</em></h4>
+
+<pre><code class="javascript">console.groupCollapsed("Logs de Usuários")
+console.log("Usuário logado")
+console.log("Usuário efetuo a compra com sucesso")
+console.groupEnd()
+
+console.groupCollapsed("Carrinho de compras")
+console.log("Carrinho vazio")
+console.log("Novo item adicionado ao carrinho")
+console.groupEnd()
+</code></pre>
+
+<p><img src="/log-group-groupCollapsed.gif" alt="Agrupando com collapsed" /></p>
+
+<h3>Testes</h3>
+
+<p>É possível usar o <strong>Console</strong> para efetuar alguns testes simples, como teste de asserção, tempo de execução e tracking.</p>
+
+<h4>Testando uma condição - <em>console.assert(expression, object)</em></h4>
+
+<p>Você pode usar o método <code>assert</code> para testar uma condição, caso ela seja falsa, será exibida a mensagem.</p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.assert( a &gt; b, "A não é maior que B")
+</code></pre>
+
+<p><img src="/logando-assert.jpg" alt="Testes com assert" /></p>
+
+<h4>Contador - <em>console.count(label)</em></h4>
+
+<p>Exibe a quantidade de vezes que a mesma <code>label</code> foi invocada.</p>
+
+<pre><code class="javascript">function validaCampo (campo) {
+ console.count('Validando campo ' + campo);
+}
+
+validaCampo('phone')
+validaCampo('email')
+</code></pre>
+
+<p><img src="/log-group-count.gif" alt="Count" /></p>
+
+<h4>Calculando o tempo - <em>console.time(label) e console.timeEnd(label)</em></h4>
+
+<pre><code class="javascript">var users = new Array(10000);
+console.time('Tempo para contabilitar os usuários')
+
+for(var i = 0; i &lt; users.length; i+=1) {
+ users[i] = new Object()
+}
+console.timeEnd("Tempo para contabilitar os usuários")
+</code></pre>
+
+<p>Contabilizando o tempo de execução de trechos de códigos, onde cada label está relacionada a um timer.</p>
+
+<p><img src="/logando-timer.jpg" alt="Count" /></p>
+
+<p>Console API possui vários métodos, tire um tempinho para ler a <a href="https://developer.chrome.com/devtools/docs/console-api">documentação completa</a>.</p>
+
+<p>Safari, Firefox, Opera e Internet Explorer também possuem seu próprio Console, segue o link da documentação de cada um:</p>
+
+<p><strong>Firefox</strong>: <a href="http://goo.gl/E3o0kK">http://goo.gl/E3o0kK</a> <br/>
+<strong>Safari</strong>: <a href="http://goo.gl/07sSft">http://goo.gl/07sSft</a> <br/>
+<strong>Opera</strong>: <a href="http://goo.gl/gaEtGr">http://goo.gl/gaEtGr</a> <br/>
+<strong>Internet Explorer</strong>: <a href="http://goo.gl/uzPYZZ">http://goo.gl/uzPYZZ</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Membros Privados Em Javascript]]></title>
+    <link href="http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/"/>
+    <updated>2015-02-26T15:04:53-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript</id>
+    <content type="html"><![CDATA[<p>Quem nunca se perguntou: <em>&ldquo;Como faço para deixar minhas variáveis e métodos privados com Javascript?&rdquo;</em>. Pois bem, tentarei de uma forma bem pragmática mostrar como fazemos isso.</p>
+
+<p>Algumas pessoas acreditam que o Javascript não tem a capacidade de <em>&ldquo;esconder informações&rdquo;</em>, porque <code>object</code> não pode ter variáveis e métodos privados. Mas isso não passa de um mal-entendido.</p>
+
+<h4><em>Sim! Objetos Javascript podem ter membros privados.</em></h4>
+
+<p>Mas, antes de nos aprofundarmos vamos entender um pouco mais do funcionamento do Javascript em relação aos objetos:</p>
+
+<!--more-->
+
+
+<h2>Objects</h2>
+
+<p>Javascript é fundamentalmente baseado em <em>objects</em>. Funções são objetos, arrays são objetos e Objetos são objetos. Mas o que são objetos?</p>
+
+<p>Objetos são coleções de pares nome-valor. Os nomes são <em>strings</em> e o valores podem ser <em>strings</em>, <em>numbers</em>, <em>booleans</em> e <em>objects</em> (incluindo <em>arrays</em> e <em>funções</em>).</p>
+
+<h2>Membros Públicos</h2>
+
+<p>Os membros de um <code>object</code> são, sem exceção, públicos. Qualquer função pode acessar, modificar, deletar ou até mesmo adicionar novos membros. Existem duas maneiras principais de inserir membros em um novo objeto:</p>
+
+<h3>No construtor</h3>
+
+<p>Esta técnica é usualmente utilizada para iniciar instâncias de <em>variáveis</em> públicas. A variável <code>this</code> do construtor é usada para adicionar um membro ao objeto.</p>
+
+<pre><code class="javascript">function Adicionar ( param ) {
+    this.membro = param;
+}
+</code></pre>
+
+<p>Então, se construírmos um novo objeto</p>
+
+<pre><code class="javascript">var novo_objeto = new Adicionar( 'a-b-c' );
+</code></pre>
+
+<p>O valor de <code>novo_objeto.membro</code> será <code>a-b-c</code>.</p>
+
+<h3>No prototype</h3>
+
+<p>Esta técnica é utilizada para adicionar <em>métodos</em> públicos. Quando um membro é procurado dentro do próprio objeto e não é encontrado, ele é retirado do protótipo do Construtor do objeto. O mecânismo do <em>prototype</em> é usado para herança. O que também conserva a memória. Para adicionar um método para todos os objetos criados a partir do Construtor, adicione uma função ao protótipo do Construtor:</p>
+
+<pre><code class="javascript">Adicionar.prototype.stamp = function ( string ) {
+    return this.membro + string;
+}
+</code></pre>
+
+<p>Então, podemos chamar o método:</p>
+
+<pre><code class="javascript">novo_objeto.stamp( '-d-e-f' );
+</code></pre>
+
+<p>E o resultado será: <code>a-b-c-d-e-f</code>.</p>
+
+<h2>Membros Privados</h2>
+
+<p>Membros privados são criados pelo construtor. Variáveis comuns e parâmetros do <em>Construtor</em> se tornam membros privados.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+}
+</code></pre>
+
+<p>Este construtor criou três variáveis privadas: <code>param</code>, <code>limite</code> e <code>that</code>. Elas estão anexadas ao objeto, mas não estão acessíveis fora, nem são acessíveis aos métodos públicos do objeto. Elas estão acessíveis aos métodos privados. Métodos privados são funções internas do <em>Construtor</em>.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+    //
+    function resgata () {
+        if ( limite &gt; 0 &amp;&amp; 'undefined' !== typeof that.membro) {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+</code></pre>
+
+<p>Por convenção, nós declaramos a variável <code>that</code> privada. Isso é usado para tornar o objeto disponível para os métodos privados, pois ao usar o <code>this</code> dentro da função ele apontará para o <code>this</code> dela mesma e não para o <code>this</code> do <em>Construtor</em>.</p>
+
+<p>Métodos privados não podem ser invocados por métodos públicos. Para fazer os métodos privados utilizáveis, nós precisamos fazer com que ele tenha privilégios.</p>
+
+<h2>Membros Privilegiados</h2>
+
+<p>Um método privilegiado tem permissão para acessar variáveis e métodos privados, e é acessível por métodos públicos e externos. É possível deletar ou sobrescrever um método privilegiado, mas não é possível alterá-lo e nem forçá-lo a exibir seu conteúdo.</p>
+
+<p>Métodos privilegiados são atribuídos com <code>this</code> dentro do <em>Construtor</em>.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+    //
+    function resgata () {
+        if ( limite &gt; 0 ) {
+            return true
+        } else {
+            return false
+        }
+    }
+    //
+    this.escreve = function () {
+        return resgata() ? this.membro : null;
+    }
+}
+</code></pre>
+
+<p>Então temos o método privilegiado <code>escreve</code> que acessa os valores definidos dentro do <em>Construtor</em>, porém não pode alterá-los. \o/</p>
+
+<p>Isso só é possível porque existem as <em>Closures</em> no Javascript.</p>
+
+<h2>Closures</h2>
+
+<p>Os padrões de membros <code>public</code>, <code>private</code> e <code>privileged</code> só se tornam possíveis pelo fato da linguagem Javascript possuir <em>Closures</em>.</p>
+
+<p>Isso quer dizer que uma função interna sempre tem acesso as variáveis e parâmetros da função externa, mesmo depois de ela já ter executado.
+Essa é uma propriedade muito poderosa da linguagem Javascript!</p>
+
+<p>Métodos privados e privilegiados só podem ser atribuídos enquanto o objeto está sendo construído, já os públicos podem ser adicionados a qualquer momento.</p>
+
+<h2>Padrões utilizando Closures</h2>
+
+<h3>Membros Públicos</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    this.membro = valor;
+}
+Construtor.prototype.membro = valor;
+</code></pre>
+
+<h3>Membros Privados</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    var that = this,
+        nome = valor;
+    //
+    function nome ( ... ) { ... };
+}
+</code></pre>
+
+<p>Observação: a instrução da função</p>
+
+<pre><code class="javascript">    function nome ( ... ) { ... };
+</code></pre>
+
+<p>é uma abreviação para:</p>
+
+<pre><code class="javascript">    var nome = function nome ( ... ) { ... };
+</code></pre>
+
+<h3>Membros Privilegiados</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    this.nome = function ( ... ) { ... }
+}
+</code></pre>
+
+<p>Referência:</p>
+
+<ul>
+<li><strong> Douglas Crockford </strong>: <a href="http://javascript.crockford.com/private.html">http://javascript.crockford.com/private.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simulando Classes Em Javascript]]></title>
+    <link href="http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript/"/>
+    <updated>2015-02-24T00:01:27-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript</id>
+    <content type="html"><![CDATA[<p>Quando comecei a desenvolver em JavaScript um dos primeiros conflitos que tive com a linguagem foi o famoso caso das classes, na faculdade eu havia aprendido os conceitos de orientação a objeto e aplicado esses conhecimentos somente nas linguagens Java e C#, de início foi difícil compreender esse mundo novo do JavaScript, afinal tanto em Java como em C# não se tem os protótipos, por este motivo quis escrever este post, para aqueles que estão iniciando possam  compreender melhor o funcionamento da linguagem , mas vamos por partes, para compreender classes em JavaScript primeiro é necessário compreender o que é protótipos.</p>
+
+<!-- more -->
+
+
+<h2>Protótipos</h2>
+
+<p>Todo objeto em JavaScript tem um segundo objeto, este segundo objeto é chamado de protótipo, e o primeiro sempre herda as propriedades deste protótipo. Todos os objetos criados com a palavra-chave <code>new</code> utilizam a função construtora como protótipo, exemplo:</p>
+
+<pre><code class="javascript criando objeto">//criando objeto e herdando de Date.prototype
+var data = new Date();
+//utilizando método do objeto new Date() que foi herdada pelo objeto data
+data.getDate();
+</code></pre>
+
+<p>O objeto data herda as propriedades de <code>Date.prototype</code> e de <code>Object.prototype</code>, essa série de encadeamento nos chamamos de encandeamento de protótipos.</p>
+
+<h2>Criando classes em JavaScript</h2>
+
+<p>A maneira como se é criada classes em JavaScript é diferente da maneira como é feita em Java, as classes em JavaScript são baseadas em cima do mecanismo de  protótipos, primeiro é necessário criar uma função que se tem o nome de construtora e através dela  é possível se realizar a herança de propriedades para o objeto que vai herdar, segue o código abaixo tanto em JavaScript como em Java para que você possa comparar as diferenças.</p>
+
+<pre><code class="java exemplo classe pessoa java">//classe em Java
+public class Pessoa {
+    //atributos 
+    private String nome;
+    private int idade;
+    //construtor
+    public Pessoa(String nome, int idade){
+        this.nome = nome;
+        this.idade = idade;
+    }
+    //metodos
+    public void falar(){
+        System.out.print("Meu nome é " + this.nome + " e minha idade é " + this.idade);
+    }
+    public void andar(){
+        System.out.println(this.nome + " esta andando");
+    }
+
+
+    public static void main(String[] args){
+        Pessoa meuObjeto = new Pessoa("Rodrigo", 30);
+        meuObjeto.andar();
+        meuObjeto.falar();
+
+    }
+}
+</code></pre>
+
+<pre><code class="javascript exemplo classe pessoa javascript">//funçao construtora
+function Pessoa (nome, idade){
+    this.nome = nome;
+    this.idade = idade;
+}
+
+Pessoa.prototype = {
+    falar: function(){
+        console.log('meu nome e ' + this.nome + ' minha idade e ' + this.idade);
+    },
+    andar: function(){
+        console.log(this.nome +' esta andando');
+    }
+}
+</code></pre>
+
+<p>A maneira como lidamos, como instanciamos e utilizamos os métodos em JavaScript são os mesmos de linguagem Java.</p>
+
+<pre><code class="javascript exemplo criando objeto em javascript">//criando objeto em JavaScript
+var meuObjeto = new Pessoa('Rodrigo', 30);
+//invocando os metodos
+meuObjeto.falar();
+meuObjeto.idade();  
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Looping Com Função Anônima Auto-executável]]></title>
+    <link href="http://jsenv.com/blog/2015/02/23/looping-com-funcao-anonima-auto-executavel/"/>
+    <updated>2015-02-23T13:55:09-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/23/looping-com-funcao-anonima-auto-executavel</id>
+    <content type="html"><![CDATA[<p>Javascript em alguns momentos é uma linguagem muito traiçoeira, prega peças que consomem horas de debug e paciência. São os chamados <a href="http://en.wikipedia.org/wiki/Gotcha_%28programming%29">Gotchas</a>, na tradução literal, <em>&ldquo;pegadinhas&rdquo;</em>.</p>
+
+<p>Coisas que pela lógica deveriam funcionar de uma maneira, mas por características de um sistema ou alguma linguagem programação funcionam de maneira inesperada.</p>
+
+<!-- more -->
+
+
+<p>Esse post se dedica a tratar de um Gotcha muito comum relacionado a  escopo, que provavelmente você já foi pego por ele, caso não, é hora de explodir sua cabeça.</p>
+
+<pre><code class="javascript gotcha http://en.wikipedia.org/wiki/Gotcha_%28programming%29#Gotchas_in_JavaScript_programming_language Gotcha (programming)]">var func = [];
+for( var i = 0; i &lt; 3; i++ ){
+ func[i] = function () {
+  alert(i);
+ }
+}
+
+func[2]();
+func[0]();
+</code></pre>
+
+<p>Ao executar esse trecho de código nos deparamos com o alert sempre com o valor 3.</p>
+
+<p><strong>Oh God, Help me!</strong></p>
+
+<p>Take it easy boy, vamos entender o que acontece.</p>
+
+<p>O <code>i</code> dentro closure aponta para <code>i</code> global.  Quando chamamos a função <code>func[0]()</code> o <code>i</code> será 3 por que o valor do <code>i</code> global é 3.</p>
+
+<p>Problema semelhante acontece quando colocamos um ajax em um looping, e desejamos usar o índice dentro de seus callbacks. O índice aparece como <code>undefined</code>, veja o exemplo:</p>
+
+<pre><code class="javascript ajax dentro de looping">var users = [1028,885,931];
+for( var i = 0; i &lt; users.length; i+=1) {
+    $.ajax({
+        url: 'http://echo.jsontest.com/users/'+ users[i] ,
+        dataType: "json",
+        success: function( response ) {
+            console.log(users[i]) //undefined
+            console.log( response ); // server response
+        }
+    });
+}
+</code></pre>
+
+<p>Isso acontece porque <code>i</code> é global dentro desse escopo, logo o valor dele é 3 e <code>users[i]</code> aparece como <code>undefined</code> pois a posição 3 não existe.</p>
+
+<p>A solução é simples, devemos isolar cada índice, criando um escopo com uma função anônima auto-executável para que o valor do <code>i</code> seja preservado em cada iteração, veja o exemplo:</p>
+
+<pre><code class="javascript função anônima auto-executável com looping">var func = [];
+for( var i = 0; i &lt; 3; i++ ){
+    func[i] = (function (index) {
+        return function() { 
+            alert(index); 
+        };
+    })(i) // Índice do looping sendo passado como parâmetro
+}
+
+func[0](); // alert 0
+func[1](); // alert 1
+func[2](); //alert 2
+</code></pre>
+
+<p>Exemplo usando com ajax:</p>
+
+<pre><code class="javascript função anônima auto-executável com looping">var func = [];
+var users = [1028,885,931];
+for( var i = 0; i &lt; users.length; i+=1)
+    $.ajax({
+        url: 'http://echo.jsontest.com/users/'+ users[i] ,
+        dataType: "json",
+        success: (function(index) { // função anônima auto-executável
+            return function( response ) {
+                console.log(users[index]) // usuário correto
+                console.log( response ); // resposta
+            };
+        })(i)// Índice do looping sendo passado como parâmetro
+    });
+</code></pre>
+
+<p>O Javascript possui vários gotchas. <a href="http://www.codeproject.com/Articles/182416/A-Collection-of-JavaScript-Gotchas">Jonathan Cardy</a> escreveu um post bem completo, sobre vários gotchas do Javascript, vale uma lida.</p>
+
+<p>Já com relação a closures, existe um post no <a href="http://stackoverflow.com/questions/111102/how-do-javascript-closures-work">stackoverflow</a> detalhando sobre o assunto.</p>
+]]></content>
+  </entry>
+  
+</feed>

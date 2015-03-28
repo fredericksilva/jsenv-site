@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Prototipos | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/prototipos/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-03-27T18:29:57-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simulando Classes Em Javascript]]></title>
+    <link href="http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript/"/>
+    <updated>2015-02-24T00:01:27-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript</id>
+    <content type="html"><![CDATA[<p>Quando comecei a desenvolver em JavaScript um dos primeiros conflitos que tive com a linguagem foi o famoso caso das classes, na faculdade eu havia aprendido os conceitos de orientação a objeto e aplicado esses conhecimentos somente nas linguagens Java e C#, de início foi difícil compreender esse mundo novo do JavaScript, afinal tanto em Java como em C# não se tem os protótipos, por este motivo quis escrever este post, para aqueles que estão iniciando possam  compreender melhor o funcionamento da linguagem , mas vamos por partes, para compreender classes em JavaScript primeiro é necessário compreender o que é protótipos.</p>
+
+<!-- more -->
+
+
+<h2>Protótipos</h2>
+
+<p>Todo objeto em JavaScript tem um segundo objeto, este segundo objeto é chamado de protótipo, e o primeiro sempre herda as propriedades deste protótipo. Todos os objetos criados com a palavra-chave <code>new</code> utilizam a função construtora como protótipo, exemplo:</p>
+
+<pre><code class="javascript criando objeto">//criando objeto e herdando de Date.prototype
+var data = new Date();
+//utilizando método do objeto new Date() que foi herdada pelo objeto data
+data.getDate();
+</code></pre>
+
+<p>O objeto data herda as propriedades de <code>Date.prototype</code> e de <code>Object.prototype</code>, essa série de encadeamento nos chamamos de encandeamento de protótipos.</p>
+
+<h2>Criando classes em JavaScript</h2>
+
+<p>A maneira como se é criada classes em JavaScript é diferente da maneira como é feita em Java, as classes em JavaScript são baseadas em cima do mecanismo de  protótipos, primeiro é necessário criar uma função que se tem o nome de construtora e através dela  é possível se realizar a herança de propriedades para o objeto que vai herdar, segue o código abaixo tanto em JavaScript como em Java para que você possa comparar as diferenças.</p>
+
+<pre><code class="java exemplo classe pessoa java">//classe em Java
+public class Pessoa {
+    //atributos 
+    private String nome;
+    private int idade;
+    //construtor
+    public Pessoa(String nome, int idade){
+        this.nome = nome;
+        this.idade = idade;
+    }
+    //metodos
+    public void falar(){
+        System.out.print("Meu nome é " + this.nome + " e minha idade é " + this.idade);
+    }
+    public void andar(){
+        System.out.println(this.nome + " esta andando");
+    }
+
+
+    public static void main(String[] args){
+        Pessoa meuObjeto = new Pessoa("Rodrigo", 30);
+        meuObjeto.andar();
+        meuObjeto.falar();
+
+    }
+}
+</code></pre>
+
+<pre><code class="javascript exemplo classe pessoa javascript">//funçao construtora
+function Pessoa (nome, idade){
+    this.nome = nome;
+    this.idade = idade;
+}
+
+Pessoa.prototype = {
+    falar: function(){
+        console.log('meu nome e ' + this.nome + ' minha idade e ' + this.idade);
+    },
+    andar: function(){
+        console.log(this.nome +' esta andando');
+    }
+}
+</code></pre>
+
+<p>A maneira como lidamos, como instanciamos e utilizamos os métodos em JavaScript são os mesmos de linguagem Java.</p>
+
+<pre><code class="javascript exemplo criando objeto em javascript">//criando objeto em JavaScript
+var meuObjeto = new Pessoa('Rodrigo', 30);
+//invocando os metodos
+meuObjeto.falar();
+meuObjeto.idade();  
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

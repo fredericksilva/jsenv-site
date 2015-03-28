@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tips | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/tips/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-03-27T18:29:57-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
+    <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
+    <updated>2015-03-21T19:29:00-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
+    <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
+
+<h2>Método $.inArray da jQuery</h2>
+
+<p>Geralmente esta seria uma das alternativas para acharmos um algoritmo que facilitasse a solução do nosso problema, mas já pararam para pensar ou pesquisar o que exatamente o <code>$.inArray</code> faz ou como funciona?</p>
+
+<!--more-->
+
+
+<p>Basicamente o método <code>$.inArray</code> percorre um determinado array e retorna a posição do elemento desejado. Hmmm, isso já ajudaria bastante. Certo?</p>
+
+<p>Porém, concorda que carregar a biblioteca da <code>jQuery</code> só para resolvermos isso seria desnecessário? Então vamos melhorar isso!</p>
+
+<h2>Por trás do método $.inArray</h2>
+
+<p>Ele é semelhante ao <code>indexOf</code> nativo do Javascript e dentro da documentação da jQuery temos acesso a como o método foi escrito e podemos usar como referência.</p>
+
+<pre><code class="javascript Método descrito pela biblioteca jQuery">function inArray ( elem, array, index ) {
+  return array == null ? -1 : indexOf.call( array, elem, index);
+}
+</code></pre>
+
+<p>Porém, o <code>indexOf</code> foi adicionado como padrão no ECMA-262 em sua 5ª edição, com isso alguns navegadores antigos não suportam essa funcionalidade, por exemplo o IE8.</p>
+
+<p>Então antes de escrevermos nosso método, criaremos um <em>Helper</em> para garantirmos que esse suporte seja universal.</p>
+
+<p>Primeiro verificamos se o suporte ao <code>indexOf</code> existe, caso contrário seguiremos a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">recomendação de compatibilidade da MDC</a> descrita abaixo:</p>
+
+<pre><code class="javascript Helper.js">// Production steps of ECMA-262, Edition 5, 15.4.4.14
+// Reference: http://es5.github.io/#x15.4.4.14
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(searchElement, fromIndex) {
+
+    var k;
+
+    // 1. Let O be the result of calling ToObject passing
+    //    the this value as the argument.
+    if (this == null) {
+      throw new TypeError('"this" is null or not defined');
+    }
+
+    var O = Object(this);
+
+    // 2. Let lenValue be the result of calling the Get
+    //    internal method of O with the argument "length".
+    // 3. Let len be ToUint32(lenValue).
+    var len = O.length &gt;&gt;&gt; 0;
+
+    // 4. If len is 0, return -1.
+    if (len === 0) {
+      return -1;
+    }
+
+    // 5. If argument fromIndex was passed let n be
+    //    ToInteger(fromIndex); else let n be 0.
+    var n = +fromIndex || 0;
+
+    if (Math.abs(n) === Infinity) {
+      n = 0;
+    }
+
+    // 6. If n &gt;= len, return -1.
+    if (n &gt;= len) {
+      return -1;
+    }
+
+    // 7. If n &gt;= 0, then Let k be n.
+    // 8. Else, n&lt;0, Let k be len - abs(n).
+    //    If k is less than 0, then let k be 0.
+    k = Math.max(n &gt;= 0 ? n : len - Math.abs(n), 0);
+
+    // 9. Repeat, while k &lt; len
+    while (k &lt; len) {
+      // a. Let Pk be ToString(k).
+      //   This is implicit for LHS operands of the in operator
+      // b. Let kPresent be the result of calling the
+      //    HasProperty internal method of O with argument Pk.
+      //   This step can be combined with c
+      // c. If kPresent is true, then
+      //    i.  Let elementK be the result of calling the Get
+      //        internal method of O with the argument ToString(k).
+      //   ii.  Let same be the result of applying the
+      //        Strict Equality Comparison Algorithm to
+      //        searchElement and elementK.
+      //  iii.  If same is true, return k.
+      if (k in O &amp;&amp; O[k] === searchElement) {
+        return k;
+      }
+      k++;
+    }
+    return -1;
+  };
+}
+</code></pre>
+
+<p>Agora que podemos garantir que tudo funcione corretamente em todos os navegadores, prosseguiremos com nossa solução escrevendo nosso método para retornar a posição do elemento que desejamos remover:</p>
+
+<pre><code class="javascript Método de sugestão">function posicaoNoArray ( elemento, array ) {
+    return array == null ? -1 : array.indexOf( elemento );
+}
+</code></pre>
+
+<p>Agora que temos nossa função para encontrar a posição do elemento dentro do <em>Array</em>, vamos resolver nosso problema.</p>
+
+<p>Dado um array:</p>
+
+<pre><code class="javascript">var elementos = [10, 20, 30, 40, 50];
+</code></pre>
+
+<p>Vamos encontrar a posição do elemento cujo valor seja igual a <code>30</code> e guardar em uma variável, deixaremos também, uma variável para guardar o elemento removido.</p>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+</code></pre>
+
+<p>Nossa variável <code>posicao_elemento_remover</code> será igual a <code>2</code> lembrando que o índice do array inicia-se em <code>0</code>.</p>
+
+<p>Agora, usaremos o método <code>splice</code> do <code>Array</code> para remover o elemento:</p>
+
+<pre><code class="javascript">elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+</code></pre>
+
+<p>Seu primeiro parâmetro é a posição onde iniciará a remoção e o segundo parâmetro a quantidade de elementos que serão removidos. Como queremos somente remover um elemento, o valor adotado é <code>1</code>.</p>
+
+<p>Após essa etapa, temos:</p>
+
+<ul>
+<li><code>elementos</code>         = <code>[10, 20, 40, 50]</code>.</li>
+<li><code>elemento_removido</code> = <code>[30]</code>.</li>
+</ul>
+
+
+<h2>Código completo</h2>
+
+<pre><code class="javascript">var elementos                   = [10, 20, 30, 40, 50],
+    elemento_remover            = 30,
+    elemento_removido,
+    posicao_elemento_remover;
+    //
+    function posicaoNoArray ( elemento, array ) {
+        return array == null ? -1 : array.indexOf( elemento );
+    }
+    //
+    posicao_elemento_remover = posicaoNoArray( elemento_remover, elementos );
+    //
+    elemento_removido = elementos.splice( posicao_elemento_remover, 1);
+    //
+    console.group( 'Resultado:' );
+    console.log(' Array final:', elementos);
+    console.log(' Elemento removido: ', elemento_removido);
+    console.groupEnd();
+</code></pre>
+
+<h2>Conclusão</h2>
+
+<p>É muito importante utilizar como base de desenvolvimento, métodos e soluções nativas já consagradas e vastamente utilizadas. Assim, além de melhorarmos a escrita de nossos códigos, conseguimos chegar a algoritmos mais enxutos.</p>
+
+<p>Existem <code>n</code> maneiras de se escrever o código acima, fique à vontade para utiliza-lo dentro do seu contexto de desenvolvimento.</p>
+
+<p>Dúvidas ou sugestões, basta deixar um comentário que responderemos o mais breve possível.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Membros Privados Em Javascript]]></title>
+    <link href="http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/"/>
+    <updated>2015-02-26T15:04:53-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript</id>
+    <content type="html"><![CDATA[<p>Quem nunca se perguntou: <em>&ldquo;Como faço para deixar minhas variáveis e métodos privados com Javascript?&rdquo;</em>. Pois bem, tentarei de uma forma bem pragmática mostrar como fazemos isso.</p>
+
+<p>Algumas pessoas acreditam que o Javascript não tem a capacidade de <em>&ldquo;esconder informações&rdquo;</em>, porque <code>object</code> não pode ter variáveis e métodos privados. Mas isso não passa de um mal-entendido.</p>
+
+<h4><em>Sim! Objetos Javascript podem ter membros privados.</em></h4>
+
+<p>Mas, antes de nos aprofundarmos vamos entender um pouco mais do funcionamento do Javascript em relação aos objetos:</p>
+
+<!--more-->
+
+
+<h2>Objects</h2>
+
+<p>Javascript é fundamentalmente baseado em <em>objects</em>. Funções são objetos, arrays são objetos e Objetos são objetos. Mas o que são objetos?</p>
+
+<p>Objetos são coleções de pares nome-valor. Os nomes são <em>strings</em> e o valores podem ser <em>strings</em>, <em>numbers</em>, <em>booleans</em> e <em>objects</em> (incluindo <em>arrays</em> e <em>funções</em>).</p>
+
+<h2>Membros Públicos</h2>
+
+<p>Os membros de um <code>object</code> são, sem exceção, públicos. Qualquer função pode acessar, modificar, deletar ou até mesmo adicionar novos membros. Existem duas maneiras principais de inserir membros em um novo objeto:</p>
+
+<h3>No construtor</h3>
+
+<p>Esta técnica é usualmente utilizada para iniciar instâncias de <em>variáveis</em> públicas. A variável <code>this</code> do construtor é usada para adicionar um membro ao objeto.</p>
+
+<pre><code class="javascript">function Adicionar ( param ) {
+    this.membro = param;
+}
+</code></pre>
+
+<p>Então, se construírmos um novo objeto</p>
+
+<pre><code class="javascript">var novo_objeto = new Adicionar( 'a-b-c' );
+</code></pre>
+
+<p>O valor de <code>novo_objeto.membro</code> será <code>a-b-c</code>.</p>
+
+<h3>No prototype</h3>
+
+<p>Esta técnica é utilizada para adicionar <em>métodos</em> públicos. Quando um membro é procurado dentro do próprio objeto e não é encontrado, ele é retirado do protótipo do Construtor do objeto. O mecânismo do <em>prototype</em> é usado para herança. O que também conserva a memória. Para adicionar um método para todos os objetos criados a partir do Construtor, adicione uma função ao protótipo do Construtor:</p>
+
+<pre><code class="javascript">Adicionar.prototype.stamp = function ( string ) {
+    return this.membro + string;
+}
+</code></pre>
+
+<p>Então, podemos chamar o método:</p>
+
+<pre><code class="javascript">novo_objeto.stamp( '-d-e-f' );
+</code></pre>
+
+<p>E o resultado será: <code>a-b-c-d-e-f</code>.</p>
+
+<h2>Membros Privados</h2>
+
+<p>Membros privados são criados pelo construtor. Variáveis comuns e parâmetros do <em>Construtor</em> se tornam membros privados.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+}
+</code></pre>
+
+<p>Este construtor criou três variáveis privadas: <code>param</code>, <code>limite</code> e <code>that</code>. Elas estão anexadas ao objeto, mas não estão acessíveis fora, nem são acessíveis aos métodos públicos do objeto. Elas estão acessíveis aos métodos privados. Métodos privados são funções internas do <em>Construtor</em>.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+    //
+    function resgata () {
+        if ( limite &gt; 0 &amp;&amp; 'undefined' !== typeof that.membro) {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+</code></pre>
+
+<p>Por convenção, nós declaramos a variável <code>that</code> privada. Isso é usado para tornar o objeto disponível para os métodos privados, pois ao usar o <code>this</code> dentro da função ele apontará para o <code>this</code> dela mesma e não para o <code>this</code> do <em>Construtor</em>.</p>
+
+<p>Métodos privados não podem ser invocados por métodos públicos. Para fazer os métodos privados utilizáveis, nós precisamos fazer com que ele tenha privilégios.</p>
+
+<h2>Membros Privilegiados</h2>
+
+<p>Um método privilegiado tem permissão para acessar variáveis e métodos privados, e é acessível por métodos públicos e externos. É possível deletar ou sobrescrever um método privilegiado, mas não é possível alterá-lo e nem forçá-lo a exibir seu conteúdo.</p>
+
+<p>Métodos privilegiados são atribuídos com <code>this</code> dentro do <em>Construtor</em>.</p>
+
+<pre><code class="javascript">function Container ( param ) {
+    this.membro = param;
+    var limite  = 3,
+        that    = this;
+    //
+    function resgata () {
+        if ( limite &gt; 0 ) {
+            return true
+        } else {
+            return false
+        }
+    }
+    //
+    this.escreve = function () {
+        return resgata() ? this.membro : null;
+    }
+}
+</code></pre>
+
+<p>Então temos o método privilegiado <code>escreve</code> que acessa os valores definidos dentro do <em>Construtor</em>, porém não pode alterá-los. \o/</p>
+
+<p>Isso só é possível porque existem as <em>Closures</em> no Javascript.</p>
+
+<h2>Closures</h2>
+
+<p>Os padrões de membros <code>public</code>, <code>private</code> e <code>privileged</code> só se tornam possíveis pelo fato da linguagem Javascript possuir <em>Closures</em>.</p>
+
+<p>Isso quer dizer que uma função interna sempre tem acesso as variáveis e parâmetros da função externa, mesmo depois de ela já ter executado.
+Essa é uma propriedade muito poderosa da linguagem Javascript!</p>
+
+<p>Métodos privados e privilegiados só podem ser atribuídos enquanto o objeto está sendo construído, já os públicos podem ser adicionados a qualquer momento.</p>
+
+<h2>Padrões utilizando Closures</h2>
+
+<h3>Membros Públicos</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    this.membro = valor;
+}
+Construtor.prototype.membro = valor;
+</code></pre>
+
+<h3>Membros Privados</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    var that = this,
+        nome = valor;
+    //
+    function nome ( ... ) { ... };
+}
+</code></pre>
+
+<p>Observação: a instrução da função</p>
+
+<pre><code class="javascript">    function nome ( ... ) { ... };
+</code></pre>
+
+<p>é uma abreviação para:</p>
+
+<pre><code class="javascript">    var nome = function nome ( ... ) { ... };
+</code></pre>
+
+<h3>Membros Privilegiados</h3>
+
+<pre><code class="javascript">function Construtor ( ... ) {
+    this.nome = function ( ... ) { ... }
+}
+</code></pre>
+
+<p>Referência:</p>
+
+<ul>
+<li><strong> Douglas Crockford </strong>: <a href="http://javascript.crockford.com/private.html">http://javascript.crockford.com/private.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
