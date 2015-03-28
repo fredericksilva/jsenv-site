@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Javascript | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-27T18:29:57-03:00</updated>
+  <updated>2015-03-28T21:58:24+00:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
     <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
-    <updated>2015-03-21T19:29:00-03:00</updated>
+    <updated>2015-03-21T22:29:00+00:00</updated>
     <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
     <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
 
@@ -188,7 +188,7 @@ if (!Array.prototype.indexOf) {
   <entry>
     <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>
     <link href="http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/"/>
-    <updated>2015-03-08T00:41:33-03:00</updated>
+    <updated>2015-03-08T03:41:33+00:00</updated>
     <id>http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api</id>
     <content type="html"><![CDATA[<p><a href="https://developer.chrome.com/devtools/docs/console">Console</a> é uma ferramenta sagrada para Front-enders, usada para debugar, procurar por erros, gerar logs, fazer testes de performance, teste de asserção, entre outras coisas que nos ajudam a fazer análises a aplicação do lado do cliente.</p>
 
@@ -382,7 +382,7 @@ console.timeEnd("Tempo para contabilitar os usuários")
   <entry>
     <title type="html"><![CDATA[Membros Privados Em Javascript]]></title>
     <link href="http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/"/>
-    <updated>2015-02-26T15:04:53-03:00</updated>
+    <updated>2015-02-26T18:04:53+00:00</updated>
     <id>http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript</id>
     <content type="html"><![CDATA[<p>Quem nunca se perguntou: <em>&ldquo;Como faço para deixar minhas variáveis e métodos privados com Javascript?&rdquo;</em>. Pois bem, tentarei de uma forma bem pragmática mostrar como fazemos isso.</p>
 
@@ -556,7 +556,7 @@ Construtor.prototype.membro = valor;
   <entry>
     <title type="html"><![CDATA[Simulando Classes Em Javascript]]></title>
     <link href="http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript/"/>
-    <updated>2015-02-24T00:01:27-03:00</updated>
+    <updated>2015-02-24T03:01:27+00:00</updated>
     <id>http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript</id>
     <content type="html"><![CDATA[<p>Quando comecei a desenvolver em JavaScript um dos primeiros conflitos que tive com a linguagem foi o famoso caso das classes, na faculdade eu havia aprendido os conceitos de orientação a objeto e aplicado esses conhecimentos somente nas linguagens Java e C#, de início foi difícil compreender esse mundo novo do JavaScript, afinal tanto em Java como em C# não se tem os protótipos, por este motivo quis escrever este post, para aqueles que estão iniciando possam  compreender melhor o funcionamento da linguagem , mas vamos por partes, para compreender classes em JavaScript primeiro é necessário compreender o que é protótipos.</p>
 
@@ -637,7 +637,7 @@ meuObjeto.idade();
   <entry>
     <title type="html"><![CDATA[Looping Com Função Anônima Auto-executável]]></title>
     <link href="http://jsenv.com/blog/2015/02/23/looping-com-funcao-anonima-auto-executavel/"/>
-    <updated>2015-02-23T13:55:09-03:00</updated>
+    <updated>2015-02-23T16:55:09+00:00</updated>
     <id>http://jsenv.com/blog/2015/02/23/looping-com-funcao-anonima-auto-executavel</id>
     <content type="html"><![CDATA[<p>Javascript em alguns momentos é uma linguagem muito traiçoeira, prega peças que consomem horas de debug e paciência. São os chamados <a href="http://en.wikipedia.org/wiki/Gotcha_%28programming%29">Gotchas</a>, na tradução literal, <em>&ldquo;pegadinhas&rdquo;</em>.</p>
 

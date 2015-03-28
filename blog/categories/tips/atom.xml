@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/tips/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-27T18:29:57-03:00</updated>
+  <updated>2015-03-28T21:58:24+00:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Removendo Elementos De Um Array]]></title>
     <link href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/"/>
-    <updated>2015-03-21T19:29:00-03:00</updated>
+    <updated>2015-03-21T22:29:00+00:00</updated>
     <id>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array</id>
     <content type="html"><![CDATA[<p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
 
@@ -188,7 +188,7 @@ if (!Array.prototype.indexOf) {
   <entry>
     <title type="html"><![CDATA[Membros Privados Em Javascript]]></title>
     <link href="http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/"/>
-    <updated>2015-02-26T15:04:53-03:00</updated>
+    <updated>2015-02-26T18:04:53+00:00</updated>
     <id>http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript</id>
     <content type="html"><![CDATA[<p>Quem nunca se perguntou: <em>&ldquo;Como faço para deixar minhas variáveis e métodos privados com Javascript?&rdquo;</em>. Pois bem, tentarei de uma forma bem pragmática mostrar como fazemos isso.</p>
 

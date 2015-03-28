@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Debug | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/debug/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-03-27T18:29:57-03:00</updated>
+  <updated>2015-03-28T21:58:24+00:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>
     <link href="http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/"/>
-    <updated>2015-03-08T00:41:33-03:00</updated>
+    <updated>2015-03-08T03:41:33+00:00</updated>
     <id>http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api</id>
     <content type="html"><![CDATA[<p><a href="https://developer.chrome.com/devtools/docs/console">Console</a> é uma ferramenta sagrada para Front-enders, usada para debugar, procurar por erros, gerar logs, fazer testes de performance, teste de asserção, entre outras coisas que nos ajudam a fazer análises a aplicação do lado do cliente.</p>
 

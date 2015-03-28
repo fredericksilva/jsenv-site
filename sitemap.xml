@@ -2,66 +2,78 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/</loc>
-    <lastmod>2015-03-21T19:29:00-03:00</lastmod>
+    <lastmod>2015-03-21T22:29:00+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/</loc>
-    <lastmod>2015-03-08T00:41:33-03:00</lastmod>
+    <lastmod>2015-03-08T03:41:33+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/</loc>
-    <lastmod>2015-02-26T15:04:53-03:00</lastmod>
+    <lastmod>2015-02-26T18:04:53+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/02/24/simulando-classes-em-javascript/</loc>
-    <lastmod>2015-02-24T00:01:27-03:00</lastmod>
+    <lastmod>2015-02-24T03:01:27+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/02/23/como-sincronizar-um-fork-com-seu-repositorio-original/</loc>
-    <lastmod>2015-02-23T15:06:17-03:00</lastmod>
+    <lastmod>2015-02-23T18:06:17+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/02/23/looping-com-funcao-anonima-auto-executavel/</loc>
-    <lastmod>2015-02-23T13:55:09-03:00</lastmod>
+    <lastmod>2015-02-23T16:55:09+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/blog/2015/02/20/web-messaging/</loc>
-    <lastmod>2015-02-20T17:24:45-02:00</lastmod>
-  </url>
-  <url>
-    <loc>http://jsenv.com/blog/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://jsenv.com/blog/archives/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
-  </url>
-  <url>
-    <loc>http://jsenv.com/archives/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
+    <lastmod>2015-02-20T19:24:45+00:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/categories/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/archives/</loc>
   </url>
   <url>
     <loc>http://jsenv.com/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
   </url>
   <url>
-    <loc>http://jsenv.com/como-colaborar/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
+    <loc>http://jsenv.com/archives/</loc>
   </url>
   <url>
     <loc>http://jsenv.com/projetos/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
   </url>
   <url>
     <loc>http://jsenv.com/sobre/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://jsenv.com/como-colaborar/</loc>
   </url>
   <url>
     <loc>http://jsenv.com/posts/</loc>
-    <lastmod>2015-03-27T18:29:57-03:00</lastmod>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/javascript/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/html5/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/git/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/prototipos/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/tips/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/debug/</loc>
+  </url>
+  <url>
+    <loc>http://jsenv.com/blog/categories/console/</loc>
   </url>
 </urlset>
