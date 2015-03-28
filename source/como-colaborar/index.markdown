@@ -13,7 +13,7 @@ image:
 
 * [Instalar o Git](http://git-scm.com/book/pt-br/v1/Primeiros-passos-Instalando-Git). 
 * [Instalar o Ruby 1.9.3](https://www.ruby-lang.org/en/documentation/installation/) ou superior.
-* [Faça o fork do repositório](https://help.github.com/articles/fork-a-repo/)
+* [Faça o fork do repositório](https://github.com/JS-ENV/jsenv-site)
 
 ## Configurando o ambiente
 
