@@ -13,7 +13,7 @@ categories: [tips, web api]
 Hellow everyone.
 
 Today I going to talk about one an interesting method of the  [Web API  Interface](https://developer.mozilla.org/en-US/docs/Web/API), this method is called [getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
-
+<!--more-->
 This method help us when We want get DOM Element’s coordinates and rectangular area like top, bottom, left, right, width and height.
 
 
