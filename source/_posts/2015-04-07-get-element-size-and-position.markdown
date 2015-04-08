@@ -10,11 +10,11 @@ image:
 categories: [tips, web api]
 ---
 
-Hellow everyone.
+Hello everyone.
 
-Today I going to talk about one an interesting method of the  [Web API  Interface](https://developer.mozilla.org/en-US/docs/Web/API), this method is called [getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
+Today I'm going to talk about an interesting method of the  [Web API  Interface](https://developer.mozilla.org/en-US/docs/Web/API), this method is called [getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
 <!--more-->
-This method help us when We want get DOM Element’s coordinates and rectangular area like top, bottom, left, right, width and height.
+This method helps us when we want to get the DOM Element's coordinates and rectangular area like top, bottom, left, right, width and height.
 
 
 ```javascript
@@ -25,4 +25,6 @@ See my example:
 
 ![exemplo de uso]({{ page.image.content }}/exemplo-de-uso.gif)
 
-The  [getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) returns an live object containing  bottom, height, left, right, top, width relative of the viewport.
+The  [getBoundingClientRect](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) returns a live object containing bottom, height, left, right, top, width relative to the viewport.
+
+About browser compatibility, I have good news, this method works on most browsers, include IE8+. 
