@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Tips | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
   <link href="http://jsenv.com/blog/categories/tips/atom.xml" rel="self"/>
   <link href="http://jsenv.com/"/>
-  <updated>2015-04-08T17:53:20-03:00</updated>
+  <updated>2015-04-08T17:54:27-03:00</updated>
   <id>http://jsenv.com/</id>
   <author>
     <name><![CDATA[JS env team]]></name>
@@ -27,7 +27,7 @@
 
 <p>This method helps us when we want to get the DOM Element&rsquo;s coordinates and rectangular area like top, bottom, left, right, width and height.</p>
 
-<pre><code class="javascript">var el    = document.getElementById('element');
+<pre><code class="javascript">var el    = document.getElementById('element-x');
 var rect  = el.getBoundingClientRect();
 </code></pre>
 
