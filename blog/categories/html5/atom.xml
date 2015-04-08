@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Html5 | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/html5/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-04-08T17:48:09-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Web Messaging - API HTML 5]]></title>
+    <link href="http://jsenv.com/blog/2015/02/20/web-messaging/"/>
+    <updated>2015-02-20T17:24:45-02:00</updated>
+    <id>http://jsenv.com/blog/2015/02/20/web-messaging</id>
+    <content type="html"><![CDATA[<p><em>Web Messaging</em> ou <em>Cross-document Messaging</em> é uma API introduzida nas especificações da HTML 5 que permite a comunicação entre documentos de origens diferentes.</p>
+
+<!-- more -->
+
+
+<p>Mensagens <em>cross-document</em> permitem que os scritps possam interagir através destes limites, proporcionando um nível de segurança não muito desenvolvido.
+Sendo assim, é essencial que o desenvolvedor cheque a origem da mensagem antes de efetuar qualquer manipulação.</p>
+
+<p>A tabela abaixo, esclarece forma simples como funciona a <strong><em>Política de Mesma Origem</em></strong>:</p>
+
+<table>
+<thead>
+<tr>
+<th> <strong>URL</strong>                    </th>
+<th style="text-align:center;"> <strong>Mesma origem?</strong> </th>
+<th style="text-align:right;"> <strong>Razão</strong>        </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <a href="http://jsenv.com/about">http://jsenv.com/about</a>     </td>
+<td style="text-align:center;"> Sim             </td>
+<td style="text-align:right;"> mesmo host, protocolo, porta        </td>
+</tr>
+<tr>
+<td> <a href="http://jsenv.com/">http://jsenv.com/</a>          </td>
+<td style="text-align:center;"> Sim             </td>
+<td style="text-align:right;"> mesmo host, protocolo, porta        </td>
+</tr>
+<tr>
+<td> <a href="https://jsenv.com/">https://jsenv.com/</a>         </td>
+<td style="text-align:center;"> Não                </td>
+<td style="text-align:right;"> protocolo diferente </td>
+</tr>
+<tr>
+<td> <a href="http://jsenv.com:81">http://jsenv.com:81</a>        </td>
+<td style="text-align:center;"> Não                </td>
+<td style="text-align:right;"> porta diferente     </td>
+</tr>
+<tr>
+<td> <a href="http://about.jsenv.com">http://about.jsenv.com</a>     </td>
+<td style="text-align:center;"> Não                </td>
+<td style="text-align:right;"> host diferente      </td>
+</tr>
+</tbody>
+</table>
+
+
+<h3>window.postMessage(<em>mensagem</em>, <em>destino</em>, <em>[portas]</em>)</h3>
+
+<p>Esta API permite que seja enviadas mensagens de texto simples, porém podemos enviar objetos transformados em String, por exemplo: <strong><em>JSON.stringify()</em></strong> para o envio e <strong><em>JSON.parse()</em></strong> no recebimento.
+Confira nos exemplos abaixo:</p>
+
+<pre><code class="javascript Conversão de um objeto em string">var obj_message = { 
+    nome: 'JS Env',
+    dominio: 'jsenv.com',
+    atualizado: true },
+    str_message = '';
+/* transformando um objeto em string para envio */
+str_message = JSON.stringify( obj_message );
+</code></pre>
+
+<pre><code class="javascript Conversão de uma string em objeto">/* "{"nome":"JS Env","dominio":"jsenv.com","atualizado":true}" */
+str_message = JSON.parse( obj_message );
+</code></pre>
+
+<h3>Parâmetros:</h3>
+
+<ul>
+<li><strong>mensagem</strong>: é uma string contendo a mensagem.</li>
+<li><strong>destino</strong>: é o endereço para onde a mensagem está sendo enviada. Ele pode adotar 3 tipos de valores:
+
+<ul>
+<li>uma URL absoluta: <a href="http://www.jsenv.com">http://www.jsenv.com</a></li>
+<li>um caractere curinga (*), para receber de qualquer destino.</li>
+<li>ou um valor que restringe o destino da mensagem (/), adotando o a política de mesma origem.</li>
+</ul>
+</li>
+<li><strong>portas</strong>   (opcional):    define um array com as portas válidas para o destino da mensagem.</li>
+</ul>
+
+
+<p>As mensagens podem ser enviadas de iframes para o documento que o carrega (parent) e o processo inverso, do documento (parent) para o iframe, conforme exemplo abaixo:</p>
+
+<pre><code class="javascript">    /* Posta mensagem para o iFrame */
+    var sender = document.getElementsByTagName('iframe')[0];
+    sender.contentWindow.postMessage('{ atualizar: true }', 'http://jsenv.com/');
+</code></pre>
+
+<pre><code class="javascript">    /* Posta a mensagem para o parent do iFrame */
+    var sender = window.parent;
+    sender.postMessage('{ atualizar: true }', 'http://jsenv.com/'); 
+</code></pre>
+
+<h3>Escutando o evento &ldquo;message&rdquo;</h3>
+
+<p>Para receber a mensagem, basta escutarmos o evento padrão da especificação da API Web Messaging: <strong><em>message</em></strong> . Ele deve estar na página que irá manipular a mensagem. Conforme exemplo abaixo:</p>
+
+<pre><code class="javascript">    if ( window.addEventListener ) {
+        window.addEventListener( 'message', show_message, false );
+    } else {
+        window.attachEvent( 'message', show_message );
+    }
+    function show_message ( event ) { ... }
+</code></pre>
+
+<h3>O Evento de mensagem recebido possui os seguintes atributos:</h3>
+
+<ul>
+<li><strong>data</strong>:         O conteúdo da mensagem.</li>
+<li><strong>origin</strong>:       A origem da mensagem.</li>
+<li><strong>source</strong>:       O objeto WindowProxy do destino da mensagem.</li>
+<li><strong>ports</strong>:        Retorna um array com as portas enviadas junto da mensagem.</li>
+<li><strong>lastEventId</strong>:  Retorna o identificador do último evento.</li>
+</ul>
+
+
+<p>Assim, para visualizar cada atributo citado acima, a função <strong><em>show_message</em></strong> fica:</p>
+
+<pre><code class="javascript">    function show_message ( event ) {
+        if ( event.origin == 'http://jsenv.com' ) {     
+            console.log( 'Mensagem      =&gt;', event.data );
+            console.log( 'origem        =&gt;', event.origin );
+            console.log( 'WindowProxy   =&gt;', event.source );
+            console.log( 'Ports             =&gt;', event.ports );
+            console.log( 'LastEventID   =&gt;', event.lastEventId );
+        } else {
+            console.log( 'Origem de envio não autorizada.' );
+        }
+    }
+</code></pre>
+
+<p>Referências:</p>
+
+<ul>
+<li><strong>Wikipedia:</strong> <a href="http://en.wikipedia.org/wiki/Web_Messaging">http://en.wikipedia.org/wiki/Web_Messaging</a></li>
+<li><strong>Livro HTML 5 - Maujor:</strong> <a href="http://livrohtml5.com.br/">http://livrohtml5.com.br/</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

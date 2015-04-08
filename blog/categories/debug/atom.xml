@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Debug | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/debug/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-04-08T17:48:09-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Usando O Console Parte 1 - Console API]]></title>
+    <link href="http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/"/>
+    <updated>2015-03-08T00:41:33-03:00</updated>
+    <id>http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api</id>
+    <content type="html"><![CDATA[<p><a href="https://developer.chrome.com/devtools/docs/console">Console</a> é uma ferramenta sagrada para Front-enders, usada para debugar, procurar por erros, gerar logs, fazer testes de performance, teste de asserção, entre outras coisas que nos ajudam a fazer análises a aplicação do lado do cliente.</p>
+
+<p>Esse poste tem o objetivo de mostrar algumas dicas que vão facilitar suas análises e debug da aplicação especificamente para o <strong>Google Chrome.</strong></p>
+
+<!--more-->
+
+
+<p>O Chrome possui uma ferramenta muito poderosa chamada <a href="https://developer.chrome.com/devtools/docs/console">Console</a>, tal é composta por duas APIs, <a href="https://developer.chrome.com/devtools/docs/console">Console API</a> que será abordada neste poste e <a href="https://developer.chrome.com/devtools/docs/commandline-api">Comman Line API</a> que será abordada na parte dois do post.</p>
+
+<p>Lembrando que os exemplos deste post foram feitos no <strong>Google Chrome,</strong> porém são similares em outros browsers (Safari, Firefox e Opera).</p>
+
+<p><strong>Let&rsquo;s Rock</strong></p>
+
+<h2>Abrindo o Console</h2>
+
+<p>Para ter acesso ao Console use as teclas de atalho <strong>Ctrl + Shift + j</strong> no Windows/Linux ou <strong>Command + Option + j</strong> para Mac.</p>
+
+<p><img src="/console.jpg" alt="Console" /></p>
+
+<h3>Logando mensagens</h3>
+
+<h4>Exibir mensagem - <em>console.log(object [, object, &hellip;])</em></h4>
+
+<p>Provavelmente é o método mais utilizado da API, com ele podemos exibir mensagens no console.</p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.log(a)
+console.log(b)
+</code></pre>
+
+<p><img src="/logando-mensagem.jpg" alt="Logando mensagens" /></p>
+
+<p>Podemos usar curingas para concatenar com variáveis de forma elegante:</p>
+
+<table>
+<thead>
+<tr>
+<th> Curinga       </th>
+<th style="text-align:center;"> Tipo          </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <strong>%s</strong>            </td>
+<td style="text-align:center;"> string        </td>
+</tr>
+<tr>
+<td> <strong>%d ou %i</strong>      </td>
+<td style="text-align:center;"> integer       </td>
+</tr>
+<tr>
+<td> <strong>%f</strong>            </td>
+<td style="text-align:center;"> float         </td>
+</tr>
+<tr>
+<td> <strong>%o</strong>            </td>
+<td style="text-align:center;"> DOM Elements  </td>
+</tr>
+<tr>
+<td> <strong>%O</strong>            </td>
+<td style="text-align:center;"> Javascript object</td>
+</tr>
+<tr>
+<td> <strong>%c</strong>            </td>
+<td style="text-align:center;"> CSS style     </td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>Concatenando com variáveis:</strong></p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.log("valor de a: %i e valor de b: %i", a, b)
+</code></pre>
+
+<p><img src="/logando-concat-string.jpg" alt="Concatenando" /></p>
+
+<p><strong>Concatenando com objetos:</strong></p>
+
+<pre><code class="javascript">var nome  = { nome: "Geremias", cidade:"Jaraitinga" }
+var curso = { nome: "Administração", turma: "A" }
+
+console.log("Nome: %O e curso: %O", nome, curso)
+</code></pre>
+
+<p><img src="/logando-objetos.jpg" alt="Logando objetos" /></p>
+
+<p><strong>Estilizando as mensagens:</strong></p>
+
+<pre><code class="javascript">console.log("%cHello %cworld","color:red;font-size:x-large","color:blue")
+</code></pre>
+
+<p><img src="/logando-estilizado.jpg" alt="Logando com estilo" /></p>
+
+<h4>Exibir mensagens de alerta - <em>console.warn(object [, object, &hellip;])</em></h4>
+
+<pre><code class="javascript">console.warn("E-mail inválido")
+</code></pre>
+
+<p><img src="/logando-warn.jpg" alt="Logando mensagem de warn" /></p>
+
+<h4>Agrupando logs - <em>console.group(object [, object, &hellip;])</em>, <em>console.groupEnd()</em></h4>
+
+<pre><code class="javascript">console.group("Logs de Usuários")
+console.log("Usuário logado")
+console.log("Usuário efetuo a compra com sucesso")
+console.groupEnd();
+
+console.group("Carrinho de compras")
+console.log("Carrinho vazio")
+console.log("Novo item adicionado ao carrinho")
+console.groupEnd()
+</code></pre>
+
+<p><img src="/logando-group.jpg" alt="Agrupando" /></p>
+
+<h4>Agrupando com  groupCollapsed -  <em>console.groupCollapsed(object [, object, &hellip;])</em></h4>
+
+<pre><code class="javascript">console.groupCollapsed("Logs de Usuários")
+console.log("Usuário logado")
+console.log("Usuário efetuo a compra com sucesso")
+console.groupEnd()
+
+console.groupCollapsed("Carrinho de compras")
+console.log("Carrinho vazio")
+console.log("Novo item adicionado ao carrinho")
+console.groupEnd()
+</code></pre>
+
+<p><img src="/log-group-groupCollapsed.gif" alt="Agrupando com collapsed" /></p>
+
+<h3>Testes</h3>
+
+<p>É possível usar o <strong>Console</strong> para efetuar alguns testes simples, como teste de asserção, tempo de execução e tracking.</p>
+
+<h4>Testando uma condição - <em>console.assert(expression, object)</em></h4>
+
+<p>Você pode usar o método <code>assert</code> para testar uma condição, caso ela seja falsa, será exibida a mensagem.</p>
+
+<pre><code class="javascript">var a = 10, b = 20;
+
+console.assert( a &gt; b, "A não é maior que B")
+</code></pre>
+
+<p><img src="/logando-assert.jpg" alt="Testes com assert" /></p>
+
+<h4>Contador - <em>console.count(label)</em></h4>
+
+<p>Exibe a quantidade de vezes que a mesma <code>label</code> foi invocada.</p>
+
+<pre><code class="javascript">function validaCampo (campo) {
+ console.count('Validando campo ' + campo);
+}
+
+validaCampo('phone')
+validaCampo('email')
+</code></pre>
+
+<p><img src="/log-group-count.gif" alt="Count" /></p>
+
+<h4>Calculando o tempo - <em>console.time(label) e console.timeEnd(label)</em></h4>
+
+<pre><code class="javascript">var users = new Array(10000);
+console.time('Tempo para contabilitar os usuários')
+
+for(var i = 0; i &lt; users.length; i+=1) {
+ users[i] = new Object()
+}
+console.timeEnd("Tempo para contabilitar os usuários")
+</code></pre>
+
+<p>Contabilizando o tempo de execução de trechos de códigos, onde cada label está relacionada a um timer.</p>
+
+<p><img src="/logando-timer.jpg" alt="Count" /></p>
+
+<p>Console API possui vários métodos, tire um tempinho para ler a <a href="https://developer.chrome.com/devtools/docs/console-api">documentação completa</a>.</p>
+
+<p>Safari, Firefox, Opera e Internet Explorer também possuem seu próprio Console, segue o link da documentação de cada um:</p>
+
+<p><strong>Firefox</strong>: <a href="http://goo.gl/E3o0kK">http://goo.gl/E3o0kK</a> <br/>
+<strong>Safari</strong>: <a href="http://goo.gl/07sSft">http://goo.gl/07sSft</a> <br/>
+<strong>Opera</strong>: <a href="http://goo.gl/gaEtGr">http://goo.gl/gaEtGr</a> <br/>
+<strong>Internet Explorer</strong>: <a href="http://goo.gl/uzPYZZ">http://goo.gl/uzPYZZ</a></p>
+]]></content>
+  </entry>
+  
+</feed>

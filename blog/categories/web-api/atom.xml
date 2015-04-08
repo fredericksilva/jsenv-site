@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web Api | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/web-api/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-04-08T17:48:09-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Get Element Size and Position]]></title>
+    <link href="http://jsenv.com/blog/2015/04/07/get-element-size-and-position/"/>
+    <updated>2015-04-07T12:08:54-03:00</updated>
+    <id>http://jsenv.com/blog/2015/04/07/get-element-size-and-position</id>
+    <content type="html"><![CDATA[<p>Hello everyone.</p>
+
+<p>Today I&rsquo;m going to talk about an interesting method of the  <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web API  Interface</a>, this method is called <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">getBoundingClientRect</a>.</p>
+
+<!--more-->
+
+
+<p>This method helps us when we want to get the DOM Element&rsquo;s coordinates and rectangular area like top, bottom, left, right, width and height.</p>
+
+<pre><code class="javascript">var el    = document.getElementById('element');
+var rect  = el.getBoundingClientRect();
+</code></pre>
+
+<p>See my example:</p>
+
+<p><img src="/exemplo-de-uso.gif" alt="exemplo de uso" /></p>
+
+<p>The  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect">getBoundingClientRect</a> returns a live object containing bottom, height, left, right, top, width relative to the viewport.</p>
+
+<p>About browser compatibility, I have good news, this method works on most browsers, include IE8+.</p>
+]]></content>
+  </entry>
+  
+</feed>

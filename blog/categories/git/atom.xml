@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | JS env - Ambiente dedicado a assuntos sobre Javascript]]></title>
+  <link href="http://jsenv.com/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://jsenv.com/"/>
+  <updated>2015-04-08T17:48:09-03:00</updated>
+  <id>http://jsenv.com/</id>
+  <author>
+    <name><![CDATA[JS env team]]></name>
+    <email><![CDATA[team.jsenv@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Como Sincronizar Um Fork Com Seu Repositório Original]]></title>
+    <link href="http://jsenv.com/blog/2015/02/23/como-sincronizar-um-fork-com-seu-repositorio-original/"/>
+    <updated>2015-02-23T15:06:17-03:00</updated>
+    <id>http://jsenv.com/blog/2015/02/23/como-sincronizar-um-fork-com-seu-repositorio-original</id>
+    <content type="html"><![CDATA[<p>Estamos acostumados a dar um fork em repositórios que contém scripts, aplicações e frameworks para utilizarmos no nosso dia-a-dia, facilitando a criação de nossas aplicações.</p>
+
+<p>Mas, e se o repositório original do qual fizemos o fork se atualizar? Como faremos para sincronizar nosso fork com o repositório original?</p>
+
+<!-- more -->
+
+
+<p>Vamos entender e resolver estas questões!</p>
+
+<h3>Configurando um relacionamento entre seu fork e o repositório original</h3>
+
+<p>Para podermos sincronizar as alterações do repositório original com o seu fork, precisamos seguir os seguintes passos:</p>
+
+<p>1 - Abra o <em>terminal</em> (para usuários Mac e Linux) ou a linha de comando (para usuários Windows).</p>
+
+<p>2 - Liste o repositório corrente configurado no seu fork.</p>
+
+<pre><code class="">$ git remote -v
+origin https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+origin https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+</code></pre>
+
+<p>3 - Especifique uma ligação para o repositório que será sincronizado ao seu fork.</p>
+
+<pre><code>git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+</code></pre>
+
+<p>4 - Verifique a nova ligação que você especificou para o seu fork.</p>
+
+<pre><code>git remote -v
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)
+</code></pre>
+
+<p>Agora que executamos a configuração para sincronizar o fork com o repositório, vamos para a próxima etapa!</p>
+
+<h3>Sincronizando o fork</h3>
+
+<p>Para deixar seu fork sempre atualizado em relação ao reposiório original, siga os passos abaixo:</p>
+
+<p>1 - Abra o <em>terminal</em> (para usuários Mac e Linux) ou a linha de comando (para usuários Windows).</p>
+
+<p>2 - Vá até o diretório do seu projeto (fork)</p>
+
+<p>3 - Busque as <em>branches</em> e seus respectivos <em>commits</em> do repositório. Os <em>commits</em> feitos na branch <em>master</em> serão armazenadas na branch local: <em>upstream/master</em>.</p>
+
+<pre><code>git fetch upstream
+remote: Counting objects: 75, done.
+remote: Compressing objects: 100% (53/53), done.
+remote: Total 62 (delta 27), reused 44 (delta 9)
+Unpacking objects: 100% (62/62), done.
+From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY
+ * [new branch]      master     -&gt; upstream/master
+</code></pre>
+
+<p>4 - Certifique-se de que está na branch <em>master</em></p>
+
+<pre><code>git checkout master
+Switched to branch 'master'
+</code></pre>
+
+<p>5 - Faça um <em>merge</em> das suas alterações armazenadas em <em>upstream/master</em> dentro da sua branch <em>master</em> local. Isso atualizará a branch do seu fork sem perder suas atualizações locais.</p>
+
+<pre><code>git merge upstream/master
+Updating a422352..5fdff0f
+Fast-forward
+ README                    |    9 -------
+ README.md                 |    7 ++++++
+ 2 files changed, 7 insertions(+), 9 deletions(-)
+ delete mode 100644 README
+ create mode 100644 README.md
+</code></pre>
+
+<p>Se sua branch local não conter nenhum <em>commit</em>, o GIT irá realizar um <em>&ldquo;fast-forward&rdquo;</em>:</p>
+
+<pre><code>git merge upstream/master
+Updating 34e91da..16c56ad
+Fast-forward
+ README.md                 |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+</code></pre>
+
+<p>Pronto! Fork sincronizado e atualizado!</p>
+
+<h4>Referência:</h4>
+
+<ul>
+<li><strong>GitHub</strong>: <a href="https://help.github.com/articles/syncing-a-fork/">https://help.github.com/articles/syncing-a-fork/</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

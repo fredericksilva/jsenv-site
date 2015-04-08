@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+
+
+<meta charset="utf-8">
+<meta http-equiv="cleartype" content="on">
+
+<title>Removendo Elementos De Um Array - JS env - Ambiente dedicado a assuntos sobre Javascript</title>
+<meta name="author" content="JS env team">
+
+
+
+
+<meta name="description" content="JS env - Ambiente dedicado a assuntos sobre JavaScript">
+
+<meta name="keywords" content="tips javascript ">
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Twitter Cards -->
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="http://www.jsenv.com/post_images/38H.jpg"
+  
+  <meta name="twitter:title" content="Removendo Elementos de um Array">
+  <meta name="twitter:description" content="JS env - Ambiente dedicado a assuntos sobre JavaScript">
+  <meta name="twitter:creator" content="@jsenv">
+
+
+<!-- Open Graph -->
+<meta property="og:local" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array">
+<meta property="og:title" content="Removendo Elementos de um Array">
+<meta property="og:description" content="JS env - Ambiente dedicado a assuntos sobre JavaScript">
+
+
+
+  
+    <meta property="og:image" content="http://www.jsenv.com/post_images/38H.jpg">
+  
+
+
+<meta property="og:site_name" content="JS env - Ambiente dedicado a assuntos sobre Javascript">
+
+<link rel="canonical" href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array">
+<link href="/favicon.png" rel="icon">
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/atom.xml" rel="alternate" title="JS env - Ambiente dedicado a assuntos sobre Javascript" type="application/atom+xml">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+<script>Modernizr || document.write('<script src="/javascripts/vendor/modernizr-2.6.2.custom.min.js"><\/script>') </script>
+
+
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<body id="post" class="feature">
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/">Home</a></li>
+		<li>
+			<a href="#">Sobre</a>
+			<ul class="dl-submenu">
+				<li class="logo-sidebar">
+					<img src="http://www.jsenv.com/images/logo-js-env.png" alt="JS env team photo" class="author-photo">
+					<p>JS env - Ambiente dedicado a assuntos sobre JavaScript</p>
+				</li>
+				<li><a href="/sobre">Leia mais</a></li>
+				<li><a href="/como-colaborar">Como colaborar</a></li>
+				<li>
+					<a href="mailto:team.jsenv@gmail.com"><i class="fa fa-envelope"></i> Email</a>
+				</li>
+				<li>
+					<a href="https://www.facebook.com/jsenvbr" target="_blank" title="Página no Facebook"><i class="fa fa-facebook-square"></i> Facebook</a>
+				</li>
+				<li>
+					<a href="https://twitter.com/jsenv" target="_blank" title="Página no Twitter"><i class="fa fa-twitter"></i> Twitter</a>
+				</li>
+				
+				<li>
+					<a href="https://github.com/JS-ENV" target="_blank" title="Repositório no GitHub"><i class="fa fa-github"></i> GitHub</a>
+				</li>
+				<li>
+					<a href="/atom.xml" target="_blank" title="Acompanhe o nosso RSS"><i class="fa fa-rss"></i> RSS</a>
+				</li>
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/posts/">Posts</a></li>
+				<li><a href="/categories/">Categorias</a></li>
+			</ul>
+		</li>
+		
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+<div class="entry-header">
+  
+  <div class="entry-image">
+    <img src="http://www.jsenv.com/post_images/38H.jpg" alt="Removendo Elementos de um Array">
+  </div><!-- /.entry-image -->
+</div><!-- /.entry-header -->
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/" rel="bookmark" title="Removendo Elementos de um Array">Removendo Elementos de um Array</a></h1>
+        
+        <h2>March 21, 2015</h2>
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <p>Quem nunca precisou remover um elemento específico dentro de um array e deu aquela volta pra conseguir? Pois é, a ideia de postar esta dica é exatamente auxiliar na solução deste problema e fomentar a pesquisa de como certos métodos funcionam e aplica-los no nosso dia-a-dia.</p>
+
+<h2>Método $.inArray da jQuery</h2>
+
+<p>Geralmente esta seria uma das alternativas para acharmos um algoritmo que facilitasse a solução do nosso problema, mas já pararam para pensar ou pesquisar o que exatamente o <code>$.inArray</code> faz ou como funciona?</p>
+
+<!--more-->
+
+
+<p>Basicamente o método <code>$.inArray</code> percorre um determinado array e retorna a posição do elemento desejado. Hmmm, isso já ajudaria bastante. Certo?</p>
+
+<p>Porém, concorda que carregar a biblioteca da <code>jQuery</code> só para resolvermos isso seria desnecessário? Então vamos melhorar isso!</p>
+
+<h2>Por trás do método $.inArray</h2>
+
+<p>Ele é semelhante ao <code>indexOf</code> nativo do Javascript e dentro da documentação da jQuery temos acesso a como o método foi escrito e podemos usar como referência.</p>
+
+<figure class='code'><figcaption><span>Método descrito pela biblioteca jQuery</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">inArray</span> <span class="p">(</span> <span class="nx">elem</span><span class="p">,</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">index</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">indexOf</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">elem</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Porém, o <code>indexOf</code> foi adicionado como padrão no ECMA-262 em sua 5ª edição, com isso alguns navegadores antigos não suportam essa funcionalidade, por exemplo o IE8.</p>
+
+<p>Então antes de escrevermos nosso método, criaremos um <em>Helper</em> para garantirmos que esse suporte seja universal.</p>
+
+<p>Primeiro verificamos se o suporte ao <code>indexOf</code> existe, caso contrário seguiremos a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">recomendação de compatibilidade da MDC</a> descrita abaixo:</p>
+
+<figure class='code'><figcaption><span>Helper.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="c1">// Production steps of ECMA-262, Edition 5, 15.4.4.14</span>
+</span><span class='line'><span class="c1">// Reference: http://es5.github.io/#x15.4.4.14</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">indexOf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">searchElement</span><span class="p">,</span> <span class="nx">fromIndex</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">k</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 1. Let O be the result of calling ToObject passing</span>
+</span><span class='line'>    <span class="c1">//    the this value as the argument.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s1">&#39;&quot;this&quot; is null or not defined&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">O</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 2. Let lenValue be the result of calling the Get</span>
+</span><span class='line'>    <span class="c1">//    internal method of O with the argument &quot;length&quot;.</span>
+</span><span class='line'>    <span class="c1">// 3. Let len be ToUint32(lenValue).</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">O</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 4. If len is 0, return -1.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 5. If argument fromIndex was passed let n be</span>
+</span><span class='line'>    <span class="c1">//    ToInteger(fromIndex); else let n be 0.</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="o">+</span><span class="nx">fromIndex</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="o">===</span> <span class="kc">Infinity</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 6. If n &gt;= len, return -1.</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 7. If n &gt;= 0, then Let k be n.</span>
+</span><span class='line'>    <span class="c1">// 8. Else, n&lt;0, Let k be len - abs(n).</span>
+</span><span class='line'>    <span class="c1">//    If k is less than 0, then let k be 0.</span>
+</span><span class='line'>    <span class="nx">k</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">n</span> <span class="o">:</span> <span class="nx">len</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 9. Repeat, while k &lt; len</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="nx">k</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// a. Let Pk be ToString(k).</span>
+</span><span class='line'>      <span class="c1">//   This is implicit for LHS operands of the in operator</span>
+</span><span class='line'>      <span class="c1">// b. Let kPresent be the result of calling the</span>
+</span><span class='line'>      <span class="c1">//    HasProperty internal method of O with argument Pk.</span>
+</span><span class='line'>      <span class="c1">//   This step can be combined with c</span>
+</span><span class='line'>      <span class="c1">// c. If kPresent is true, then</span>
+</span><span class='line'>      <span class="c1">//    i.  Let elementK be the result of calling the Get</span>
+</span><span class='line'>      <span class="c1">//        internal method of O with the argument ToString(k).</span>
+</span><span class='line'>      <span class="c1">//   ii.  Let same be the result of applying the</span>
+</span><span class='line'>      <span class="c1">//        Strict Equality Comparison Algorithm to</span>
+</span><span class='line'>      <span class="c1">//        searchElement and elementK.</span>
+</span><span class='line'>      <span class="c1">//  iii.  If same is true, return k.</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">O</span> <span class="o">&amp;&amp;</span> <span class="nx">O</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">===</span> <span class="nx">searchElement</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="nx">k</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="nx">k</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">};</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Agora que podemos garantir que tudo funcione corretamente em todos os navegadores, prosseguiremos com nossa solução escrevendo nosso método para retornar a posição do elemento que desejamos remover:</p>
+
+<figure class='code'><figcaption><span>Método de sugestão</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">function</span> <span class="nx">posicaoNoArray</span> <span class="p">(</span> <span class="nx">elemento</span><span class="p">,</span> <span class="nx">array</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">elemento</span> <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<p>Agora que temos nossa função para encontrar a posição do elemento dentro do <em>Array</em>, vamos resolver nosso problema.</p>
+
+<p>Dado um array:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Vamos encontrar a posição do elemento cujo valor seja igual a <code>30</code> e guardar em uma variável, deixaremos também, uma variável para guardar o elemento removido.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span>                  <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">elemento_remover</span>            <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span> <span class="o">=</span> <span class="nx">posicaoNoArray</span><span class="p">(</span> <span class="nx">elemento_remover</span><span class="p">,</span> <span class="nx">elementos</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nossa variável <code>posicao_elemento_remover</code> será igual a <code>2</code> lembrando que o índice do array inicia-se em <code>0</code>.</p>
+
+<p>Agora, usaremos o método <code>splice</code> do <code>Array</code> para remover o elemento:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">elemento_removido</span> <span class="o">=</span> <span class="nx">elementos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">posicao_elemento_remover</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Seu primeiro parâmetro é a posição onde iniciará a remoção e o segundo parâmetro a quantidade de elementos que serão removidos. Como queremos somente remover um elemento, o valor adotado é <code>1</code>.</p>
+
+<p>Após essa etapa, temos:</p>
+
+<ul>
+<li><code>elementos</code>         = <code>[10, 20, 40, 50]</code>.</li>
+<li><code>elemento_removido</code> = <code>[30]</code>.</li>
+</ul>
+
+
+<h2>Código completo</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">elementos</span>                  <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+</span><span class='line'>  <span class="nx">elemento_remover</span>            <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="kd">function</span> <span class="nx">posicaoNoArray</span> <span class="p">(</span> <span class="nx">elemento</span><span class="p">,</span> <span class="nx">array</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">array</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">elemento</span> <span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">posicao_elemento_remover</span> <span class="o">=</span> <span class="nx">posicaoNoArray</span><span class="p">(</span> <span class="nx">elemento_remover</span><span class="p">,</span> <span class="nx">elementos</span> <span class="p">);</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">elemento_removido</span> <span class="o">=</span> <span class="nx">elementos</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span> <span class="nx">posicao_elemento_remover</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">group</span><span class="p">(</span> <span class="s1">&#39;Resultado:&#39;</span> <span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39; Array final:&#39;</span><span class="p">,</span> <span class="nx">elementos</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39; Elemento removido: &#39;</span><span class="p">,</span> <span class="nx">elemento_removido</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">console</span><span class="p">.</span><span class="nx">groupEnd</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusão</h2>
+
+<p>É muito importante utilizar como base de desenvolvimento, métodos e soluções nativas já consagradas e vastamente utilizadas. Assim, além de melhorarmos a escrita de nossos códigos, conseguimos chegar a algoritmos mais enxutos.</p>
+
+<p>Existem <code>n</code> maneiras de se escrever o código acima, fique à vontade para utiliza-lo dentro do seu contexto de desenvolvimento.</p>
+
+<p>Dúvidas ou sugestões, basta deixar um comentário que responderemos o mais breve possível.</p>
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="http://jsenv.com/categories/#tips" title="Pages tagged tips" class="tag">tips</a><a href="http://jsenv.com/categories/#javascript" title="Pages tagged javascript" class="tag">javascript</a></span>
+        <span><a href="http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/" rel="bookmark" title="Removendo Elementos de um Array">Removendo Elementos de um Array</a> was published on <span class="entry-date date published updated"><time datetime="2015-03-21T19:29:00-03:00">March 21, 2015</time></span></span>
+        
+        <span class="author vcard"><span class="fn"><a href="" title="About Leandro Cavalcante">Leandro Cavalcante</a></span></span>
+        <div class="social-share">
+          <ul class="socialcount socialcount-small inline-list">
+            <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+            <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+            <li class="googleplus"><a href="https://plus.google.com/share?url=http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+          </ul>
+        </div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    
+      <div class="read-more">
+        
+          <div class="read-more-header">
+            <a href="http://jsenv.com/blog/2015/04/07/get-element-size-and-position/" class="btn">Read More</a>
+          </div><!-- /.read-more-header -->
+          <div class="read-more-content">
+            <h3><a href="http://jsenv.com/blog/2015/04/07/get-element-size-and-position/" title="Get element size and position">Get element size and position</a></h3>
+            <p>Hello everyone.Today I&#8217;m going to talk about an interesting method of the  [Web API  Interface](https://developer.mozilla.org/en-US/docs/ &hellip;&hellip; <a href="http://jsenv.com/blog/2015/04/07/get-element-size-and-position/"> Continue reading</a></p>
+          </div><!-- /.read-more-content -->
+        
+        <div class="read-more-list">
+          
+            <div class="list-item">
+              <h4><a href="http://jsenv.com/blog/2015/03/08/usando-o-console-parte-1-console-api/" title="Usando o Console Parte 1 - Console API">Usando o Console Parte 1 - Console API</a></h4>
+              <span>Published on March 08, 2015</span>
+            </div><!-- /.list-item -->
+          
+            <div class="list-item">
+              <h4><a href="http://jsenv.com/blog/2015/02/26/membros-privados-em-javascript/" title="Membros Privados em Javascript">Membros Privados em Javascript</a></h4>
+              <span>Published on February 26, 2015</span>
+            </div><!-- /.list-item -->
+          
+        </div><!-- /.read-more-list -->
+      </div><!-- /.read-more -->
+    
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>Idealizadores <a href="https://twitter.com/ogmoura" title="Twitter - Guilherme Nascimento" target="_blank">Guilherme Nascimento</a> e <a href="https://twitter.com/lezado" title="Twitter - Leandro Cavalcante" target="_blank">Leandro Cavalcante</a> | &copy; 2015 JS env - Ambiente dedicado a assuntos sobre Javascript </span>
+
+
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+
+	        
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/javascripts/octopress.js" type="text/javascript"></script>
+<script src="/javascripts/scripts.min.js"></script>
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-59955359-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'jsenv';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/';
+        var disqus_url = 'http://jsenv.com/blog/2015/03/21/removendo-elementos-de-um-array/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	        
+
+</body>
+</html>
