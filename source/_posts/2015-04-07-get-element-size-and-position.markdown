@@ -18,7 +18,7 @@ This method helps us when we want to get the DOM Element's coordinates and recta
 
 
 ```javascript
-var el    = document.getElementById('element-x');
+var el    = document.getElementById('element');
 var rect  = el.getBoundingClientRect();
 ```
 See my example:
